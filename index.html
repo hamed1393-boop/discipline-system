@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>نظام المخالفات</title>
+<style>
+body{font-family:Tahoma;text-align:center;margin-top:80px}
+select,button{padding:10px;margin:10px}
+</style>
+</head>
+<body>
+
+<h2>نظام رصد المخالفات السلوكية</h2>
+
+<select id="stage">
+<option value="">اختر المرحلة</option>
+<option value="رابع">رابع</option>
+<option value="خامس">خامس</option>
+<option value="سادس">سادس</option>
+</select>
+
+<select id="classNum">
+<option value="">رقم الفصل</option>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+</select>
+
+<br>
+<button onclick="go()">دخول</button>
+
+<script>
+function go(){
+  let stage=document.getElementById("stage").value;
+  let classNum=document.getElementById("classNum").value;
+  if(!stage||!classNum){alert("أكمل البيانات");return;}
+  location.href="request.html?stage="+stage+"&class="+classNum;
+}
+</script>
+
+</body>
+</html>
