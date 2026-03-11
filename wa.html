@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>التواصل مع أولياء الأمور عبر واتساب</title>
+
+  <!-- Excel import -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/xlsx@0.19.3/dist/xlsx.full.min.js"></script> -->
+  <style>
+  :root{
+    --bg:#eef3f9;
+    --card:#ffffff;
+    --line:#d9e2ef;
+    --text:#102a43;
+    --muted:#627d98;
+    --primary:#1976d2;
+    --danger:#d32f2f;
+    --ok:#088395;
+    --shadow:0 10px 25px rgba(16,42,67,.08);
+    --r:14px;
+    font-family:Tahoma, Arial, sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  .wrap{
+    width:min(1700px, calc(100vw - 24px));
+    margin:18px auto;
+    padding:0 12px 24px;
+  }
+
+  .header{
+    background:linear-gradient(135deg,#1565c0,#1e88e5);
+    color:#fff;
+    border-radius:var(--r);
+    padding:14px 16px;
+    box-shadow:var(--shadow);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+
+  .header h1{
+    margin:0;
+    font-size:20px;
+  }
+
+  .sub{
+    font-size:12px;
+    opacity:.92;
+    margin-top:4px;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    box-shadow:var(--shadow);
+    padding:14px;
+  }
+
+  .card h2{
+    margin:0 0 10px;
+    font-size:18px;
+  }
+
+  label{
+    font-size:12px;
+    color:var(--muted);
+    display:block;
+    margin-bottom:6px;
+  }
+
+  input, select, textarea{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px;
+    font-size:14px;
+    background:#fff;
+    outline:none;
+  }
+
+  textarea{
+    min-height:110px;
+    resize:vertical;
+  }
+
+  input:focus, select:focus, textarea:focus{
+    border-color:#9cc4ff;
+    box-shadow:0 0 0 3px rgba(25,118,210,.12);
+  }
+
+  .actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+
+  .btn{
+    border:none;
+    border-radius:12px;
+    padding:10px 12px;
+    cursor:pointer;
+    font-size:13px;
+    color:#fff;
+    background:var(--primary);
+  }
+
+  .btn.secondary{ background:#546e7a; }
+  .btn.danger{ background:var(--danger); }
+  .btn.ok{ background:var(--ok); }
+  .btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+  .inline{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+
+  .toolbar{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px;
+    align-items:end;
+    margin-top:10px;
+  }
+
+  .countbar{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:10px;
+    color:var(--muted);
+    font-size:12px;
+  }
+
+  .small{ font-size:12px; color:var(--muted); }
+  .dangerText{ color:var(--danger); font-size:12px; margin-top:10px; }
+
+  /* التخطيط العام */
+  .page-grid{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:14px;
+    align-items:start;
+  }
+
+  .students-card{
+    min-width:0;
+  }
+
+  .message-card{
+    min-width:0;
+    position:sticky;
+    top:16px;
+  }
+
+  /* منطقة الطلاب */
+  .listFlex{
+    display:grid;
+    grid-template-columns:1fr 250px;
+    gap:12px;
+    align-items:start;
+    margin-top:10px;
+    min-width:0;
+  }
+
+  .tableBox{
+    min-width:0;
+    overflow:auto;
+    border:1px solid var(--line);
+    border-radius:12px;
+    max-height:540px;
+    background:#fff;
+  }
+
+  table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+  }
+
+  thead th{
+    text-align:right;
+    font-size:12px;
+    color:#fff;
+    background:#234;
+    padding:10px;
+    position:sticky;
+    top:0;
+    z-index:1;
+    white-space:nowrap;
+  }
+
+  tbody td{
+    border-bottom:1px solid var(--line);
+    padding:10px;
+    font-size:13px;
+    vertical-align:middle;
+    background:#fff;
+    white-space:nowrap;
+  }
+
+  tbody tr:hover td{
+    background:#f7fbff;
+  }
+
+  .chip{
+    font-size:11px;
+    padding:4px 8px;
+    border-radius:999px;
+    background:#eef5ff;
+    color:#1e3a8a;
+    display:inline-block;
+  }
+
+  .sidebar{
+    width:250px;
+    min-width:250px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    box-shadow:var(--shadow);
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .sidebarTitle{
+    font-size:12px;
+    color:var(--muted);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .sideList{
+    list-style:none;
+    padding:0;
+    margin:0;
+    overflow:auto;
+    max-height:430px;
+  }
+
+  .sideItem{
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    margin-bottom:8px;
+    font-size:12px;
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    background:#fbfdff;
+  }
+
+  .sideNum{
+    color:var(--muted);
+    font-size:11px;
+  }
+
+  .sideBtns{
+    display:flex;
+    gap:8px;
+  }
+
+  .sideBtn{
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:10px;
+    padding:7px 10px;
+    cursor:pointer;
+    font-size:12px;
+  }
+
+  .sideBtn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+  }
+
+  /* الرسالة */
+  .message-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  #otherText, #preview{
+    pointer-events:auto !important;
+    user-select:text !important;
+    opacity:1 !important;
+  }
+
+  @media (max-width:1200px){
+    .page-grid{
+      grid-template-columns:1fr;
+    }
+
+    .message-card{
+      position:static;
+    }
+  }
+
+  @media (max-width:900px){
+    .listFlex{
+      grid-template-columns:1fr;
+    }
+
+    .sidebar{
+      width:100%;
+      min-width:0;
+    }
+
+    .toolbar{
+      grid-template-columns:1fr;
+    }
+
+    .message-grid{
+      grid-template-columns:1fr;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div>
+        <h1>التواصل مع أولياء الأمور عبر واتساب</h1>
+        <div class="sub">© 2026 حامد العبيـدي – جميع الحقوق محفوظة</div>
+      </div>
+      <div class="inline">
+        <button class="btn secondary" type="button" onclick="window.close()">إغلاق</button>
+      </div>
+    </div>
+
+    <div class="page-grid">
+
+  <div class="card students-card">
+    <div class="inline" style="justify-content:space-between;">
+      <h2>قائمة الطلاب</h2>
+      <div class="actions">
+        <label class="btn secondary" style="display:inline-flex;align-items:center;gap:8px;margin:0;">
+          <input id="excelFile" type="file" accept=".xlsx,.xls,.csv" style="display:none">
+          رفع Excel
+        </label>
+        <button class="btn ok" type="button" id="btnAdd">إضافة</button>
+        <button class="btn danger" type="button" id="btnDeleteSelected" disabled>حذف المحدد</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div>
+        <label>بحث بالاسم أو الرقم</label>
+        <input id="q" placeholder="اكتب اسم الطالب أو رقم الهاتف…" />
+      </div>
+
+      <div>
+        <label>التحديد</label>
+        <div class="actions">
+          <button class="btn secondary" type="button" id="btnSelectAll">اختيار الكل</button>
+          <button class="btn secondary" type="button" id="btnClearSel">إلغاء التحديد</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="countbar">
+      <span>الإجمالي: <b id="totalCount">0</b></span>
+      <span>المعروض: <b id="viewCount">0</b></span>
+      <span>المحدد: <b id="selCount">0</b></span>
+      <span class="small">يفضّل الرقم بصيغة دولية مثل: <b>9665XXXXXXXX</b></span>
+    </div>
+
+    <div class="listFlex">
+      <div class="tableBox">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:64px;">تحديد</th>
+              <th>اسم الطالب</th>
+              <th>رقم ولي الأمر</th>
+              <th style="width:240px;">إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="sidebar">
+        <div class="sidebarTitle">
+          <span>المعروض (3 فقط)</span>
+          <span class="sideNum"><b id="sidePageInfo">1</b></span>
+        </div>
+
+        <ul id="sideList" class="sideList"></ul>
+
+        <div class="sideBtns">
+          <button id="sidePrev" type="button" class="sideBtn">السابق</button>
+          <button id="sideNext" type="button" class="sideBtn">التالي</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card message-card">
+    <h2>بناء الرسالة وإرسالها</h2>
+
+    <div class="message-grid">
+      <div>
+        <label>نوع الحالة</label>
+        <select id="caseType">
+          <option value="absence">غياب</option>
+          <option value="late">تأخر صباحي</option>
+          <option value="violation">مخالفة سلوكية</option>
+          <option value="positive">سلوك متميز</option>
+        </select>
+      </div>
+
+      <div>
+        <label>المؤشر</label>
+        <select id="indicator">
+          <option value="">—</option>
+          <option value="طبيعي">طبيعي</option>
+          <option value="بداية انحراف">بداية انحراف</option>
+          <option value="خطر">خطر</option>
+          <option value="حرج">حرج</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="margin-top:10px;">
+      <label id="presetLabel">تفاصيل</label>
+      <select id="preset">
+        <option value="">—</option>
+        <option value="أخرى">أخرى</option>
+      </select>
+    </div>
+
+    <div style="margin-top:10px;">
+      <label>مربع نص (اختياري) عند اختيار "أخرى"</label>
+      <input id="otherText" placeholder="اكتب التفاصيل هنا..." />
+    </div>
+
+    <div style="margin-top:10px;">
+      <label>معاينة الرسالة (حسب أول طالب محدد)</label>
+      <textarea id="preview" placeholder="يمكنك تعديل الرسالة يدويًا هنا..."></textarea>
+    </div>
+
+    <div class="actions" style="margin-top:10px;">
+      <button class="btn ok" type="button" id="btnSend" disabled>فتح واتساب للمحدد</button>
+      <button class="btn secondary" type="button" id="btnNext" disabled>التالي</button>
+      <button class="btn secondary" type="button" id="btnCopy" disabled>نسخ الرسالة</button>
+    </div>
+
+    <div id="warn" class="dangerText" style="display:none;"></div>
+  </div>
+
+</div>
+  <script type="module">
+  // ✅ انسخ firebaseConfig من admin.html
+  const firebaseConfig = {
+  apiKey: "AIzaSyCw3XLws007fQ9Q-TegFGlf61OyryDxayo",
+  authDomain: "discipline-school.firebaseapp.com",
+  projectId: "discipline-school",
+  storageBucket: "discipline-school.firebasestorage.app",
+  messagingSenderId: "31107094996",
+  appId: "1:31107094996:web:342a28d04f8bc1049cde41",
+  measurementId: "G-JDJSHCHE9T"
+};
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, doc, updateDoc, deleteDoc,
+    onSnapshot, query, orderBy, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+import * as XLSX from "https://esm.sh/xlsx@0.18.5";
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+  const COL = "wa_contacts"; // ✅ collection مستقلة
+
+  const $ = (id)=>document.getElementById(id);
+
+  let all = [];        // {id, name, phone}
+  let filtered = [];
+  let selected = new Set();
+
+  function normalizePhone(raw){ return String(raw ?? "").replace(/[^\d]/g,""); }
+  function normalizeName(raw){ return String(raw ?? "").trim().replace(/\s+/g," "); }
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, m=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  function updateCounts(){
+    $("totalCount").textContent = all.length;
+    $("viewCount").textContent  = filtered.length;
+    $("selCount").textContent   = selected.size;
+
+    const any = selected.size > 0;
+    $("btnSend").disabled = !any;
+    $("btnCopy").disabled = !any;
+    $("btnDeleteSelected").disabled = !any;
+
+    buildPreview();
+  }
+
+// ✅ Sidebar paging (10 أسماء فقط)
+let sidePage = 0;
+const SIDE_SIZE = 3;
+
+function renderSidebar(){
+  const list = document.getElementById("sideList");
+  const prev = document.getElementById("sidePrev");
+  const next = document.getElementById("sideNext");
+  const info = document.getElementById("sidePageInfo");
+  if(!list || !prev || !next || !info) return;
+
+  const total = filtered.length;
+  const pages = Math.max(1, Math.ceil(total / SIDE_SIZE));
+  if(sidePage >= pages) sidePage = pages - 1;
+  if(sidePage < 0) sidePage = 0;
+
+  const start = sidePage * SIDE_SIZE;
+  const slice = filtered.slice(start, start + SIDE_SIZE);
+
+  list.innerHTML = "";
+  slice.forEach((r, i)=>{
+    const li = document.createElement("li");
+    li.className = "sideItem";
+    li.innerHTML = `
+      <span>${escapeHtml(r.name || "-")}</span>
+      <span class="sideNum">${start + i + 1}</span>
+    `;
+    list.appendChild(li);
+  });
+
+  info.textContent = `${sidePage + 1} / ${pages}`;
+  prev.disabled = sidePage === 0;
+  next.disabled = sidePage >= pages - 1;
+}
+
+// أزرار التقليب
+document.getElementById("sidePrev")?.addEventListener("click", ()=>{
+  sidePage--;
+  renderSidebar();
+});
+document.getElementById("sideNext")?.addEventListener("click", ()=>{
+  sidePage++;
+  renderSidebar();
+});
+
+  function render(){
+    const qv = $("q").value.trim().toLowerCase();
+    filtered = all.filter(r=>{
+      if(!qv) return true;
+      return (r.name||"").toLowerCase().includes(qv) || (r.phone||"").includes(qv);
+    });
+
+    const tb = $("tbody");
+    tb.innerHTML = "";
+
+    for(const r of filtered){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="text-align:center;">
+          <input type="checkbox" class="cb" data-id="${r.id}" ${selected.has(r.id)?"checked":""}>
+        </td>
+        <td><span class="chip">${escapeHtml(r.name || "-")}</span></td>
+        <td>${escapeHtml(r.phone || "-")}</td>
+        <td>
+          <div class="actions">
+            <button class="btn secondary" type="button" data-act="edit" data-id="${r.id}">تعديل</button>
+            <button class="btn danger" type="button" data-act="del" data-id="${r.id}">حذف</button>
+          </div>
+        </td>
+      `;
+      tb.appendChild(tr);
+    }
+
+    tb.querySelectorAll(".cb").forEach(cb=>{
+      cb.onchange = ()=>{
+        const id = cb.dataset.id;
+        if(cb.checked) selected.add(id); else selected.delete(id);
+        updateCounts();
+      };
+    });
+
+    tb.querySelectorAll("[data-act='del']").forEach(b=>{
+      b.onclick = async ()=>{
+        const id = b.dataset.id;
+        if(!confirm("حذف هذا الطالب من قائمة واتساب؟")) return;
+        await deleteDoc(doc(db, COL, id));
+      };
+    });
+
+    tb.querySelectorAll("[data-act='edit']").forEach(b=>{
+      b.onclick = async ()=>{
+        const id = b.dataset.id;
+        const r = all.find(x=>x.id===id);
+        if(!r) return;
+
+        const newName  = normalizeName(prompt("تعديل اسم الطالب:", r.name) || "");
+        if(!newName) return alert("الاسم مطلوب.");
+        const newPhone = normalizePhone(prompt("تعديل رقم ولي الأمر:", r.phone) || "");
+        if(!newPhone) return alert("الرقم مطلوب.");
+
+        await updateDoc(doc(db, COL, id), {
+          name: newName,
+          phone: newPhone,
+          updatedAt: serverTimestamp()
+        });
+      };
+    });
+
+    updateCounts();
+  }
+
+  function selectAll(){ for(const r of filtered) selected.add(r.id); render(); }
+  function clearSel(){ selected.clear(); render(); }
+
+  async function deleteSelected(){
+    if(selected.size===0) return;
+    if(!confirm(`حذف عدد (${selected.size}) من القائمة؟`)) return;
+    const ids = [...selected];
+    selected.clear();
+    for(const id of ids) await deleteDoc(doc(db, COL, id));
+  }
+
+  const VIOLATION_PRESETS = ["عدم الالتزام بالتعليمات","إزعاج داخل الصف","تلفظ غير لائق","تأخر عن الحصة","أخرى"];
+  const POSITIVE_PRESETS  = ["تعاون واحترام","انضباط مميز","مشاركة فعّالة","مبادرة إيجابية","أخرى"];
+
+  function setupPresets(){
+    const type = $("caseType").value;
+    const preset = $("preset");
+    preset.innerHTML = `<option value="">—</option>`;
+
+    if(type === "violation"){
+      $("presetLabel").textContent = "نوع المخالفة";
+      for(const x of VIOLATION_PRESETS) preset.innerHTML += `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`;
+    }else if(type === "positive"){
+      $("presetLabel").textContent = "نوع السلوك المتميز";
+      for(const x of POSITIVE_PRESETS) preset.innerHTML += `<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`;
+    }else{
+      $("presetLabel").textContent = "تفاصيل (اختياري)";
+      preset.innerHTML += `<option value="أخرى">أخرى</option>`;
+    }
+
+    refreshOtherField();
+    buildPreview();
+  }
+
+  function refreshOtherField(){
+  const enable = ($("preset").value === "أخرى");
+
+  // ✅ نخلي الحقل دائمًا قابل للكتابة لكن نخفيه إذا مو "أخرى"
+  $("otherText").style.display = enable ? "" : "none";
+  if(!enable) $("otherText").value = "";
+}
+
+  function buildMessage(studentName){
+    const type = $("caseType").value;
+    const ind  = $("indicator").value ? ` (${ $("indicator").value })` : "";
+    const p    = $("preset").value || "";
+    const other= normalizeName($("otherText").value || "");
+    const detail = (p === "أخرى") ? (other ? other : "أخرى") : (p ? p : "");
+
+    if(type==="absence")  return `ولي أمر الطالب/ة (${studentName}) نود إشعاركم بتسجيل غياب اليوم${ind}. شاكرين تعاونكم.`;
+    if(type==="late")     return `ولي أمر الطالب/ة (${studentName}) نود إشعاركم بتسجيل تأخر صباحي اليوم${ind}. شاكرين تعاونكم.`;
+    if(type==="violation"){
+      const d = detail ? `: (${detail})` : "";
+      return `ولي أمر الطالب/ة (${studentName}) نود إشعاركم بتسجيل مخالفة سلوكية${d}${ind}. نأمل المتابعة والتوجيه.`;
+    }
+    if(type==="positive"){
+      const d = detail ? `: (${detail})` : "";
+      return `ولي أمر الطالب/ة (${studentName}) نبارك لكم تسجيل سلوك متميز${d}${ind}. شكرًا لدعمكم.`;
+    }
+    return `ولي أمر الطالب/ة (${studentName})`;
+  }
+
+  function firstSelected(){
+    const id = [...selected][0];
+    return all.find(x=>x.id===id);
+  }
+
+  function buildPreview(){
+  const first = firstSelected();
+  if(!first){
+    $("preview").value = "";
+    $("warn").style.display = "none";
+    return;
+  }
+
+  // ✅ إذا المستخدم كتب بنفسه، لا نطغى على كتابته
+  if($("preview").dataset.userEdited === "1"){
+    if(selected.size > 1){
+      $("warn").style.display = "block";
+      $("warn").textContent = "تنبيه: سيتم فتح واتساب لكل طالب محدد في تبويب مستقل.";
+    }else{
+      $("warn").style.display = "none";
+    }
+    return;
+  }
+
+  $("preview").value = buildMessage(first.name || "");
+
+  if(selected.size > 1){
+    $("warn").style.display = "block";
+    $("warn").textContent = "تنبيه: سيتم فتح واتساب لكل طالب محدد في تبويب مستقل.";
+  }else{
+    $("warn").style.display = "none";
+  }
+}
+
+  function waUrl(phone, text){
+  // ✅ للكمبيوتر: فتح واتساب ويب مباشرة
+  const p = normalizePhone(phone);
+  return `https://web.whatsapp.com/send?phone=${p}&text=${encodeURIComponent(text)}`;
+}
+
+  let sendQueue = [];
+let sendIndex = 0;
+
+function prepareQueue(){
+  const manual = $("preview").value.trim();
+  sendQueue = [...selected]
+    .map(id => all.find(x=>x.id===id))
+    .filter(r => r && r.phone);
+
+  sendIndex = 0;
+
+  // نخزن الرسالة لكل طالب (إذا ما فيه تعديل يدوي يبني رسالة لكل طالب باسمه)
+  sendQueue = sendQueue.map(r => ({
+    ...r,
+    msg: manual ? manual : buildMessage(r.name || "")
+  }));
+}
+
+function openCurrent(){
+  const r = sendQueue[sendIndex];
+  if(!r) return;
+
+  // WhatsApp Web
+  const url = `https://web.whatsapp.com/send?phone=${normalizePhone(r.phone)}&text=${encodeURIComponent(r.msg)}`;
+  window.open(url, "_blank");
+
+  // تنبيه بسيط داخل الصفحة
+  $("warn").style.display = "block";
+  $("warn").textContent =
+    `تم فتح واتساب للطالب (${r.name}). بعد الإرسال اضغط "التالي" لفتح الطالب التالي. (${sendIndex+1}/${sendQueue.length})`;
+}
+
+function sendWA(){
+  if(selected.size===0) return;
+  prepareQueue();
+  openCurrent();
+
+  // ✅ نفعّل زر "التالي" إذا كان عندك (سأعطيك إضافته تحت)
+  const nextBtn = document.getElementById("btnNext");
+  if(nextBtn){
+    nextBtn.disabled = sendQueue.length <= 1;
+  }
+}
+
+// زر التالي
+function nextWA(){
+  if(sendQueue.length===0) return;
+  if(sendIndex >= sendQueue.length - 1){
+    $("warn").style.display = "block";
+    $("warn").textContent = "✅ انتهى فتح جميع أولياء الأمور.";
+    document.getElementById("btnNext").disabled = true;
+    return;
+  }
+  sendIndex++;
+  openCurrent();
+}
+
+  function copyMsg(){
+    const first = firstSelected();
+    if(!first) return;
+    navigator.clipboard.writeText(buildMessage(first.name || ""));
+    alert("تم نسخ الرسالة.");
+  }
+
+  async function addStudent(){
+    const name = normalizeName(prompt("اسم الطالب:") || "");
+    if(!name) return alert("الاسم مطلوب.");
+    const phone = normalizePhone(prompt("رقم ولي الأمر (مثال 9665XXXXXXXX):") || "");
+    if(!phone) return alert("الرقم مطلوب.");
+
+    await addDoc(collection(db, COL), { name, phone, createdAt: serverTimestamp() });
+  }
+
+  // Excel import → Firestore
+  $("excelFile").addEventListener("change", async (e)=>{
+  const file = e.target.files?.[0];
+  if(!file) return;
+
+  try{
+    // ✅ قراءة الملف
+    const data = await file.arrayBuffer();
+    const wb = XLSX.read(data, { type:"array" });
+
+    if(!wb.SheetNames?.length) throw new Error("الملف لا يحتوي على Sheets.");
+
+    // ✅ أول شيت
+    const ws = wb.Sheets[wb.SheetNames[0]];
+
+    // ✅ قراءة كسطور (عناوين + بيانات)
+    const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" });
+
+    if(!aoa.length) throw new Error("الملف فارغ.");
+
+    // ✅ العناوين أول صف
+    const headers = (aoa[0] || []).map(h => String(h||"").trim().toLowerCase());
+
+    const findCol = (keys)=>{
+      for(const k of keys){
+        const kk = k.toLowerCase();
+        const idx = headers.findIndex(h => h.includes(kk));
+        if(idx !== -1) return idx;
+      }
+      return -1;
+    };
+
+    const nameCol  = findCol(["اسم الطالب","الاسم","studentname","student name","name","student"]);
+    const phoneCol = findCol(["رقم ولي الأمر","رقم ولي الامر","رقم الجوال","الجوال","phone","mobile","parentphone"]);
+
+    if(nameCol === -1 || phoneCol === -1){
+      throw new Error("لم يتم العثور على أعمدة: (اسم الطالب) و(رقم ولي الأمر) في الصف الأول.");
+    }
+
+    let added = 0;
+
+    // ✅ من الصف الثاني
+    for(let i=1; i<aoa.length; i++){
+      const row = aoa[i] || [];
+      const n = normalizeName(row[nameCol] ?? "");
+      const p = normalizePhone(row[phoneCol] ?? "");
+      if(!n || !p) continue;
+
+      await addDoc(collection(db, COL), {
+        name: n,
+        phone: p,
+        createdAt: serverTimestamp(),
+        importedFromExcel: true
+      });
+      added++;
+    }
+
+    alert(added ? `تم استيراد ${added} سجل ✅` : "لم يتم استيراد أي سجلات. تأكد من وجود بيانات تحت العناوين.");
+
+  }catch(err){
+    console.error("Excel import error:", err);
+    alert("فشل استيراد Excel: " + (err?.message || "خطأ غير معروف"));
+  }finally{
+    e.target.value = "";
+  }
+});
+
+  // Bind
+  $("btnAdd").onclick = addStudent;
+  $("btnSelectAll").onclick = selectAll;
+  $("btnClearSel").onclick = clearSel;
+  $("btnDeleteSelected").onclick = deleteSelected;
+
+  $("q").addEventListener("input", render);
+  $("caseType").addEventListener("change", setupPresets);
+  $("preset").addEventListener("change", ()=>{ refreshOtherField(); buildPreview(); });
+  $("otherText").addEventListener("input", buildPreview);
+  $("indicator").addEventListener("change", buildPreview);
+
+  $("btnSend").onclick = sendWA;
+  $("btnNext").onclick = nextWA;
+  $("btnCopy").onclick = copyMsg;
+
+  $("preview").addEventListener("input", ()=> {
+  $("preview").dataset.userEdited = "1";
+});
+
+  // Live load
+  const q1 = query(collection(db, COL), orderBy("createdAt","desc"));
+  onSnapshot(q1, (snap)=>{
+    all = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+    const idsNow = new Set(all.map(x=>x.id));
+    selected = new Set([...selected].filter(id=>idsNow.has(id)));
+    render();
+    buildPreview();
+  });
+
+  setupPresets();
+</script>
+</body>
+</html>

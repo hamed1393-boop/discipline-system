@@ -6,58 +6,288 @@
 <title>تسجيل مخالفة سلوكية</title>
 
 <style>
+:root{
+    --bg1:#eef3f9;
+    --bg2:#dfe9f7;
+    --card:#ffffff;
+    --primary:#2f6fe4;
+    --primary-dark:#1f57bd;
+    --primary-light:#6ea2ff;
+    --text:#163254;
+    --muted:#6d84a3;
+    --line:#d7e2f1;
+    --field:#f8fbff;
+    --shadow-card:0 18px 40px rgba(37,84,160,.16);
+    --shadow-3d:
+      inset 0 2px 0 rgba(255,255,255,.85),
+      inset 0 -3px 8px rgba(31,87,189,.14),
+      0 10px 18px rgba(47,111,228,.22);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+button,
+select,
+input,
+textarea{
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+}
+
 body{
     margin:0;
-    font-family:Tahoma;
-    background:#eef2f7;
+    font-family:Tahoma, Arial, sans-serif;
+    background:linear-gradient(180deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    min-height:100vh;
+    padding:
+      max(18px, env(safe-area-inset-top))
+      18px
+      max(18px, env(safe-area-inset-bottom));
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
 }
+
 .header{
-    background:#1976d2;
+    width:min(100%, 560px);
+    margin:0 auto 14px auto;
+    background:linear-gradient(180deg,var(--primary-light),var(--primary));
     color:white;
     text-align:center;
-    padding:18px;
-    font-size:22px;
+    padding:20px 18px;
+    font-size:24px;
+    font-weight:700;
+    border-radius:22px;
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,.35),
+      inset 0 -6px 14px rgba(19,62,146,.18),
+      0 14px 28px rgba(39,92,190,.28);
 }
+
 .container{
-    max-width:500px;
-    margin:25px auto;
-    background:white;
-    padding:25px;
-    border-radius:12px;
-    box-shadow:0 4px 15px rgba(0,0,0,.1);
+    width:min(100%, 560px);
+    margin:0 auto;
+    background:var(--card);
+    padding:24px;
+    border-radius:26px;
+    box-shadow:var(--shadow-card);
+    border:1px solid rgba(255,255,255,.8);
 }
+
 .info{
-    background:#f4f6fa;
-    padding:12px;
-    border-radius:8px;
+    background:linear-gradient(180deg,#f8fbff,#edf4ff);
+    padding:14px 16px;
+    border-radius:18px;
     margin-bottom:20px;
     text-align:center;
     font-size:18px;
+    font-weight:700;
+    color:var(--primary-dark);
+    border:1px solid var(--line);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.95),
+      0 6px 14px rgba(62,110,190,.08);
 }
-select,input,textarea{
-    width:100%;
-    padding:14px;
-    margin-bottom:15px;
-    font-size:18px;
-    border-radius:8px;
-    border:1px solid #ccc;
-}
+
+select,
+input,
 textarea{
-    min-height:80px;
+    width:100%;
+    padding:15px 16px;
+    margin-bottom:16px;
+    font-size:16px;
+    border-radius:18px;
+    border:1px solid var(--line);
+    background:var(--field);
+    color:var(--text);
+    outline:none;
+    -webkit-appearance:none;
+    appearance:none;
+    font-family:inherit;
+    box-shadow:
+      inset 0 2px 4px rgba(255,255,255,.95),
+      inset 0 -2px 6px rgba(103,136,191,.08),
+      0 4px 10px rgba(44,96,180,.05);
+    transition:.18s ease;
 }
+
+textarea:disabled{
+    background:#edf2f8;
+    color:#8aa0bd;
+    cursor:not-allowed;
+    box-shadow:none;
+}
+
+
+select:focus,
+input:focus,
+textarea:focus{
+    border-color:#7ea9ff;
+    background:#ffffff;
+    transform:translateY(-1px);
+    box-shadow:
+      inset 0 2px 4px rgba(255,255,255,.98),
+      0 0 0 4px rgba(47,111,228,.12),
+      0 12px 24px rgba(47,111,228,.14);
+}
+
+select{
+    background-image:
+      linear-gradient(45deg, transparent 50%, #5c84d6 50%),
+      linear-gradient(135deg, #5c84d6 50%, transparent 50%);
+    background-position:
+      calc(20px) calc(50% - 3px),
+      calc(12px) calc(50% - 3px);
+    background-size:8px 8px, 8px 8px;
+    background-repeat:no-repeat;
+    padding-left:42px;
+}
+
+select[multiple]{
+    background-image:none;
+    padding-left:16px;
+    min-height:220px;
+    line-height:1.8;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+}
+
+select[multiple] option{
+    padding:12px 12px;
+    border-radius:10px;
+    margin:3px 0;
+    min-height:42px;
+}
+
+select[multiple] option:checked{
+    background:linear-gradient(180deg,#6ea2ff,#2f6fe4);
+    color:#fff;
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
 button{
     width:100%;
-    padding:14px;
-    font-size:18px;
-    background:#1976d2;
+    padding:16px;
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:.2px;
+    background:linear-gradient(180deg,#7fb0ff 0%, #4b86f0 45%, #2f6fe4 100%);
     color:white;
     border:none;
-    border-radius:8px;
+    outline:none;
+    border-radius:20px;
     cursor:pointer;
+    -webkit-appearance:none;
+    appearance:none;
+    -webkit-user-select:none;
+    user-select:none;
+    font-family:inherit;
+    text-shadow:0 1px 0 rgba(0,0,0,.12);
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,.45),
+      inset 0 -5px 10px rgba(20,57,132,.18),
+      0 12px 20px rgba(47,111,228,.24),
+      0 4px 8px rgba(24,63,146,.14);
+    transition:transform .12s ease, box-shadow .12s ease, filter .12s ease;
 }
+
 button:hover{
-    opacity:.9;
+    transform:translateY(-1px);
+    filter:brightness(1.02);
 }
+
+button:active{
+    transform:translateY(2px);
+    box-shadow:
+      inset 0 3px 8px rgba(18,55,129,.25),
+      0 4px 10px rgba(47,111,228,.18);
+}
+
+button:disabled{
+    cursor:not-allowed;
+    filter:grayscale(.15);
+    opacity:.75;
+    transform:none;
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,.35),
+      0 6px 12px rgba(120,145,190,.14);
+}
+
+@supports (-webkit-touch-callout: none){
+    body{
+        min-height:-webkit-fill-available;
+    }
+}
+
+@media (max-width:600px){
+    body{
+        padding:12px;
+    }
+
+    .header{
+        font-size:22px;
+        padding:18px 14px;
+        border-radius:20px;
+    }
+
+.copyright-badge{
+    font-size:12px;
+    padding:7px 10px;
+    border-radius:12px;
+}
+
+    .copyright-badge{
+    width:min(100%, 560px);
+    margin:0 auto 14px auto;
+    text-align:center;
+    font-size:13px;
+    font-weight:700;
+    color:#5f7aa3;
+    background:rgba(255,255,255,.7);
+    border:1px solid rgba(255,255,255,.85);
+    border-radius:14px;
+    padding:8px 12px;
+    box-shadow:0 8px 18px rgba(37,84,160,.08);
+    backdrop-filter:blur(6px);
+}
+
+    .container{
+        padding:18px;
+        border-radius:22px;
+    }
+
+    .info{
+        font-size:16px;
+        padding:12px 14px;
+    }
+
+    select,
+    input,
+    textarea{
+        padding:14px;
+        border-radius:16px;
+    }
+
+    button{
+    font-size:18px;
+    padding:16px;
+    min-height:54px;
+    border-radius:18px;
+    }
+}
+
 </style>
 </head>
 
@@ -72,33 +302,57 @@ button:hover{
 
 <div class="container">
 
-<div class="info" id="classInfo"></div>
+<div class="info" id="classInfo" aria-live="polite"></div>
 
-<select id="student" multiple size="8"></select>
+<select id="student" multiple size="8" aria-label="قائمة الطلاب" aria-live="polite">
+    <option value="" disabled>جارٍ تحميل الطلاب...</option>
+</select>
 
 <!-- نوع السجل الرئيسي -->
-<select id="mainType">
+<select id="mainType" required aria-label="نوع السجل">
     <option value="">اختر نوع السجل</option>
     <option value="غياب">غياب</option>
     <option value="تأخر صباحي">تأخر صباحي</option>
     <option value="مخالفة سلوكية">مخالفة سلوكية</option>
+    <option value="السلوك المتميز">السلوك المتميز</option>
 </select>
 
 <!-- قائمة المخالفات السلوكية (تظهر فقط عند الاختيار) -->
-<select id="violationType" style="display:none;">
+<select id="violationType" style="display:none;" aria-label="نوع المخالفة السلوكية">
     <option value="">اختر نوع المخالفة</option>
     <option value="تنمر">تنمر</option>
     <option value="تشاجر">تشاجر</option>
     <option value="إزعاج داخل الفصل">إزعاج داخل الفصل</option>
     <option value="عدم إحضار الواجب">عدم إحضار الواجب</option>
+    <option value="تأخر عن الحصة">تأخر عن الحصة</option>
     <option value="أخرى">أخرى</option>
 </select>
+<select id="positiveType" style="display:none;" aria-label="مؤشر السلوك المتميز">
+  <option value="">اختر مؤشر السلوك</option>
+  <option value="انضباط الطالب وعدم غيابه بدون عذر خلال الفصل الدراسي">انضباط الطالب وعدم غيابه بدون عذر خلال الفصل الدراسي</option>
+  <option value="المشاركة في الخدمة المجتمعية خارج المدرسة">المشاركة في الخدمة المجتمعية خارج المدرسة</option>
+  <option value="تقديم فعالية حوارية">تقديم فعالية حوارية </option>
+  <option value="المشاركة في حملة توعوية">المشاركة في حملة توعوية</option>
+  <option value="عرض تجارب شخصبة ناجحة">عرض تجارب شخصبة ناجحة</option>
+  <option value="الالتحاق ببرنامج أو دورة">الالتحاق ببرنامج أو دورة</option>
+  <option value="مهارات الاتصال">مهارات الاتصال</option>
+  <option value="مهارات القيادة">مهارات القيادة</option>
+  <option value="مهارات القيادة زالمسؤولية">مهارات القيادة زالمسؤولية</option>
+  <option value="المهارات الرقمية">المهارات الرقمية</option>
+  <option value="مبادرات إدرة الوقت">مبادرات إدرة الوقت</option>
+  <option value="كتابة رسائل شكر">كتابة رسائل شكر</option>
+  <option value="المشاركة في الاذاعة">المشاركة في الاذاعة</option>
+  <option value="تقديم مقترح لصالح المجتمع المدرسي">تقديم مقترح لصالح المجتمع المدرسي</option>
+  <option value="التعاون مع الزملاء والمعلمين وإدارة المدرسة">التعاون مع الزملاء والمعلمين وإدارة المدرسة</option>
+  <option value="كتابة رسائل شكر">كتابة رسائل شكر</option>
+  <option value="أخرى">أخرى</option>
+</select>
 
-<textarea id="description" placeholder="وصف إضافي (اختياري)"></textarea>
+<textarea id="description" placeholder="وصف إضافي (اختياري)" maxlength="300" spellcheck="false" inputmode="text" aria-label="وصف إضافي"></textarea>
 
-<input type="text" id="teacher" placeholder="اسم المعلم">
+<input type="text" id="teacher" placeholder="اسم المعلم" autocomplete="name" autocapitalize="words" spellcheck="false" maxlength="60" required inputmode="text" aria-label="اسم المعلم">
 
-<button id="submitBtn">تسجيل السجل</button>
+<button id="submitBtn" aria-label="تسجيل السجل">تسجيل السجل</button>
 
 </div>
 
@@ -116,7 +370,6 @@ import {
   where
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-import { studentsData } from "./students.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCw3XLws007fQ9Q-TegFGlf61OyryDxayo",
@@ -132,36 +385,172 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const params = new URLSearchParams(window.location.search);
-const stage = params.get("stage");
-const classNum = params.get("class");
+const stage = (params.get("stage") || "").trim();
+const classNum = (params.get("class") || "").trim();
 
 document.getElementById("classInfo").innerText =
 `المرحلة: ${stage} | الفصل: ${classNum}`;
 
-const key = stage + "-" + classNum;
-const students = studentsData[key] || [];
+const studentSelect = document.getElementById("student");
+
+async function fetchStudentsFromFirestore(stage, classNum){
+
+  const ck = `${stage}-${classNum}`;
+
+  const q = query(
+    collection(db,"students"),
+    where("classKey","==",ck)
+  );
+
+  const snap = await getDocs(q);
+  const out = [];
+
+  snap.forEach(d=>{
+    const x = d.data() || {};
+    if(x.active === false) return;
+
+    const name = String(x.name || "").trim();
+    if(name) out.push(name);
+  });
+
+  out.sort((a,b)=>a.localeCompare(b,"ar"));
+
+  return out;
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
 
 const studentSelect = document.getElementById("student");
 
-const mainTypeSelect = document.getElementById("mainType");
-const violationTypeSelect = document.getElementById("violationType");
+studentSelect.innerHTML = "";
+studentSelect.disabled = true;
 
-/* إظهار قائمة المخالفات عند اختيار مخالفة سلوكية */
-mainTypeSelect.addEventListener("change", () => {
-    if(mainTypeSelect.value === "مخالفة سلوكية"){
-        violationTypeSelect.style.display = "block";
-    }else{
-        violationTypeSelect.style.display = "none";
-        violationTypeSelect.value = "";
-    }
-});
+try{
+  const students = await fetchStudentsFromFirestore(stage, classNum);
 
-students.forEach(name=>{
+  if(!students.length){
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "لا يوجد طلاب في هذا الفصل";
+    option.disabled = true;
+    option.selected = false;
+    studentSelect.appendChild(option);
+    return;
+  }
+
+  students.forEach(name=>{
     const option = document.createElement("option");
     option.value = name;
     option.textContent = name;
     studentSelect.appendChild(option);
+  });
+
+  studentSelect.disabled = false;
+
+}catch(error){
+  console.error("خطأ في جلب الطلاب:", error);
+  const option = document.createElement("option");
+  option.value = "";
+  option.textContent = "تعذر تحميل الطلاب";
+  option.disabled = true;
+  option.selected = false;
+  studentSelect.appendChild(option);
+}
+
 });
+
+
+
+const mainTypeSelect = document.getElementById("mainType");
+const violationTypeSelect = document.getElementById("violationType");
+const positiveTypeSelect = document.getElementById("positiveType");
+const descriptionInput = document.getElementById("description");
+const teacherInput = document.getElementById("teacher");
+const submitBtn = document.getElementById("submitBtn");
+
+violationTypeSelect.addEventListener("change", () => {
+  const isOther = violationTypeSelect.value === "أخرى";
+
+  descriptionInput.required = isOther;
+  descriptionInput.disabled = !isOther;
+  descriptionInput.placeholder = isOther
+    ? "اكتب الوصف هنا (مطلوب)"
+    : "وصف إضافي (اختياري)";
+
+  if(!isOther){
+    descriptionInput.value = "";
+  }
+
+  if(isOther){
+    descriptionInput.focus();
+  } else if(violationTypeSelect.value){
+    teacherInput.focus();
+  }
+});
+
+positiveTypeSelect.addEventListener("change", () => {
+  const isOther = positiveTypeSelect.value === "أخرى";
+
+  descriptionInput.required = isOther;
+  descriptionInput.disabled = !isOther;
+  descriptionInput.placeholder = isOther
+    ? "اكتب الوصف هنا (مطلوب)"
+    : "وصف إضافي (اختياري)";
+
+  if(!isOther){
+    descriptionInput.value = "";
+  }
+
+  if(isOther){
+    descriptionInput.focus();
+  } else if(positiveTypeSelect.value){
+    teacherInput.focus();
+  }
+});
+
+violationTypeSelect.style.display = "none";
+violationTypeSelect.value = "";
+
+positiveTypeSelect.style.display = "none";
+positiveTypeSelect.value = "";
+
+descriptionInput.disabled = true;
+descriptionInput.required = false;
+descriptionInput.placeholder = "وصف إضافي (اختياري)";
+
+mainTypeSelect.addEventListener("change", () => {
+
+  violationTypeSelect.style.display = "none";
+  violationTypeSelect.value = "";
+
+  positiveTypeSelect.style.display = "none";
+  positiveTypeSelect.value = "";
+  
+
+  descriptionInput.value = "";
+descriptionInput.required = false;
+descriptionInput.disabled = true;
+descriptionInput.placeholder = "وصف إضافي (اختياري)";
+teacherInput.value = "";
+teacherInput.focus();
+
+  if(mainTypeSelect.value === "مخالفة سلوكية"){
+    violationTypeSelect.style.display = "block";
+    violationTypeSelect.focus();
+    return;
+  }
+
+  if(mainTypeSelect.value === "السلوك المتميز"){
+    positiveTypeSelect.style.display = "block";
+    positiveTypeSelect.focus();
+    return;
+  }
+
+  if(mainTypeSelect.value === "غياب" || mainTypeSelect.value === "تأخر صباحي"){
+    teacherInput.focus();
+  }
+});
+
 
 /* =============================== */
 /* منع تكرار التسجيل في نفس اليوم */
@@ -176,18 +565,43 @@ function getSchoolDayRange(){
     }
 
     const start = new Date(referenceDate);
-    start.setHours(7,30,0,0);
+    start.setHours(9,0,0,0);
 
     const end = new Date(referenceDate);
-    end.setHours(13,10,0,0);
+    end.setHours(23,59,59,999);
 
     return {start,end};
 }
 
-document.getElementById("submitBtn").addEventListener("click", async () => {
 
-    const selectedOptions = [...studentSelect.selectedOptions];
-    const selectedStudents = selectedOptions.map(opt => opt.value);
+submitBtn.addEventListener("click", async () => {
+
+  const resetSubmitBtn = () => {
+  submitBtn.disabled = false;
+  submitBtn.textContent = "تسجيل السجل";
+};
+
+    const selectedOptions = [...studentSelect.selectedOptions].filter(opt => !opt.disabled);
+const selectedStudents = selectedOptions.map(opt => opt.value.trim()).filter(Boolean);
+
+const hasRealStudents =
+  studentSelect.options.length > 0 &&
+  [...studentSelect.options].some(opt => !opt.disabled && opt.value.trim().length > 0);
+
+resetSubmitBtn();
+
+if(!hasRealStudents){
+  alert("لا يمكن التسجيل لأن قائمة الطلاب غير متاحة حاليًا");
+  studentSelect.focus();
+
+  return;
+}
+
+if(submitBtn.disabled) return;
+
+submitBtn.disabled = true;
+submitBtn.textContent = "جارٍ التسجيل...";
+
 
     console.log("نوع أول عنصر:", typeof selectedStudents[0]);
     console.log("القيمة:", selectedStudents[0]);
@@ -195,51 +609,70 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
     const mainType = mainTypeSelect.value;
     const violationType = violationTypeSelect.value;
 
-    const description = document.getElementById("description").value;
-    const teacher = document.getElementById("teacher").value;
+    const description = descriptionInput.value.trim();
+    const teacher = teacherInput.value.trim();
 
-    if(selectedStudents.length === 0 || !teacher || !mainType){
-        alert("يرجى اختيار طالب واحد على الأقل وكتابة اسم المعلم");
-        return;
-    }
+   if(
+ selectedStudents.length === 0 ||
+ teacher.trim().length === 0 ||
+ !mainType ||
+ !stage ||
+ !classNum
+ ){
+alert("يرجى اختيار المرحلة والفصل والطالب وكتابة اسم المعلم");
 
+if(selectedStudents.length === 0){
+  studentSelect.focus();
+} else if(!mainType){
+  mainTypeSelect.focus();
+} else if(teacher.trim().length === 0){
+  teacherInput.focus();
+}
+
+resetSubmitBtn();
+return;
+}
     const {start,end} = getSchoolDayRange();
     let collectionName = "";
     let isAttendance = false;
 
     if(mainType === "غياب" || mainType === "تأخر صباحي"){
-    collectionName = "attendance";
-    isAttendance = true;
-    }else{
-    collectionName = "violations";
-    }
+  collectionName = "attendance";
+  isAttendance = true;
+}
+else if(mainType === "السلوك المتميز"){
+  collectionName = "positive";     // ✅ الجديد
+  isAttendance = false;
+}
+else{
+  collectionName = "violations";   // ✅ المخالفات السلوكية تبقى هنا
+  isAttendance = false;
+}
 
 
-    try {
-const now = new Date();
-const startOfDay = new Date(now.setHours(0,0,0,0));
-const endOfDay = new Date(now.setHours(23,59,59,999));
+ try {
+const today = new Date().toLocaleDateString("en-CA");
 
- for (const studentName of selectedStudents) {
+for (let studentName of selectedStudents) {
+  studentName = studentName.trim();
+
+let uniqueId = `${today}_${stage.trim()}_${classNum.trim()}_${studentName}`;
 
   // 🔹 منع التكرار فقط للغياب والتأخر
   if (isAttendance) {
 
     const now = new Date();
     const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
+    startOfDay.setHours(9,0,0,0);
 
     const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
+    endOfDay.setHours(23,59,59,999);
 
-    const q = query(
-      collection(db, "attendance"),
-      where("student", "==", studentName),
-      where("stage", "==", stage),
-      where("classNum", "==", classNum),
-      where("date", ">=", startOfDay),
-      where("date", "<=", endOfDay)
-    );
+    
+   const q = query(
+  collection(db, "attendance"),
+  where("id", "==", uniqueId)
+);
 
     const snapshot = await getDocs(q);
 
@@ -249,38 +682,117 @@ const endOfDay = new Date(now.setHours(23,59,59,999));
     }
   }
 
+// 🔹 منع التكرار للسلوك المتميز في نفس اليوم
+if(mainType === "السلوك المتميز"){
+  const q2 = query(
+    collection(db, "positive"),
+    where("id", "==", uniqueId)
+  );
+
+  const snapshot2 = await getDocs(q2);
+
+  if(!snapshot2.empty){
+    alert(`⚠️ تم تسجيل سلوك متميز لـ ${studentName} مسبقًا اليوم`);
+    continue;
+  }
+}
+
   // 🔹 إنشاء البيانات
   let data = {
   student: studentName,
-  teacher,
+  teacher: teacher.trim(),
   stage,
   classNum,
   date: serverTimestamp()
 };
 
 if(isAttendance){
-    data.status = mainType; // غياب أو تأخر
-}else{
+
+  data.status = mainType; // غياب أو تأخر
+
+} else {
+
+  if(mainType === "مخالفة سلوكية"){
+
     if(!violationType){
-        alert("يرجى اختيار نوع المخالفة السلوكية");
-        return;
-    }
+  alert("يرجى اختيار نوع المخالفة السلوكية");
+  violationTypeSelect.focus();
+  resetSubmitBtn();
+  return;
+}
+
     data.category = "مخالفة سلوكية";
     data.violationType = violationType;
-    data.description = description;
+
+    if(violationType === "أخرى" && !description.trim()){
+  alert("يرجى كتابة الوصف في خانة (وصف إضافي)");
+  descriptionInput.focus();
+  resetSubmitBtn();
+  return;
+}
+    data.description = description.trim();
+
+  } 
+  else if(mainType === "السلوك المتميز"){
+
+    const positiveType = positiveTypeSelect.value;
+
+    if(!positiveType){
+  alert("يرجى اختيار مؤشر السلوك المتميز");
+  positiveTypeSelect.focus();
+  resetSubmitBtn();
+  return;
+}
+
+    data.category = "السلوك المتميز";
+    data.positiveType = positiveType;
+
+    if(positiveType === "أخرى" && !description.trim()){
+  alert("يرجى كتابة الوصف في خانة (وصف إضافي)");
+  descriptionInput.focus();
+  resetSubmitBtn();
+  return;
+}
+    data.description = description.trim();
+
+  }
+  else{
+    // حماية: لو تم اختيار شيء غير متوقع
+    alert("يرجى اختيار نوع سجل صحيح");
+    return;
+  }
+}
+   
+   data.id = uniqueId;
+
+await addDoc(collection(db, collectionName), data);
 }
 
 
-  await addDoc(collection(db, collectionName), data);
-}
+studentSelect.selectedIndex = -1;
+studentSelect.scrollTop = 0;
+[...studentSelect.options].forEach(opt => opt.selected = false);
+mainTypeSelect.value = "";
+violationTypeSelect.value = "";
+violationTypeSelect.style.display = "none";
+positiveTypeSelect.value = "";
+positiveTypeSelect.style.display = "none";
+descriptionInput.value = "";
+descriptionInput.required = false;
+descriptionInput.placeholder = "وصف إضافي (اختياري)";
+teacherInput.value = "";
+studentSelect.focus();
 
-
+resetSubmitBtn();
 alert("✅ تم التسجيل بنجاح");
 location.reload();
 
 } catch (error) {
-    alert("حدث خطأ أثناء الحفظ");
-    console.error(error);
+    console.error("Firebase Error:", error);
+    alert(error.message);
+} finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "تسجيل السجل";
 }
 
 });

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>باركود الفصول</title>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<style>
+body{
+  font-family:Tahoma;
+  padding:30px;
+  background:#f2f5f9;
+  text-align:center;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:30px;
+  margin-top:20px;
+}
+
+.qrBox{
+  padding:15px;
+  border:1px solid #ddd;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>باركود تسجيل المخالفات للفصول</h2>
+
+<div class="grid" id="qrContainer"></div>
+
+</div>
+
+<script>
+
+const baseURL = "https://discipline-school.web.app/request.html";
+
+const stages = ["رابع","خامس","سادس"];
+const classes = ["1","2","3","4"];
+
+const container = document.getElementById("qrContainer");
+
+stages.forEach(stage=>{
+  classes.forEach(classNum=>{
+
+    const link = `${baseURL}?stage=${stage}&class=${classNum}`;
+
+    const box = document.createElement("div");
+    box.className = "qrBox";
+
+    const title = document.createElement("h3");
+    title.innerText = stage + " - " + classNum;
+
+    const canvas = document.createElement("canvas");
+
+    QRCode.toCanvas(canvas, link);
+
+    box.appendChild(title);
+    box.appendChild(canvas);
+
+    container.appendChild(box);
+
+  });
+});
+
+</script>
+
+</body>
+</html>

@@ -35,12 +35,67 @@ body{
 }
 .top-buttons{
     display:flex;
-    justify-content:center;
+    justify-content:space-between;
     align-items:center;
     gap:10px;
-    margin:20px 0;
     flex-wrap:wrap;
 }
+
+.bulk-actions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background: rgba(255,255,255,.08);
+    padding:6px 10px;
+    border-radius:10px;
+}
+
+/* إخفاء النص داخل أزرار الطباعة والحذف */
+.bulk-actions button{
+  background:#ffffff;
+  border:1px solid #d5dbe6;
+  border-radius:8px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+/* إظهار الأيقونة فقط */
+.bulk-actions button:hover{
+  background:#f0f3f8;
+}
+
+
+
+#bulkCounter{
+    background: rgba(255,255,255,.15);
+    padding:5px 10px;
+    border-radius:8px;
+    font-size:13px;
+}
+th.chk, td.chk{
+  width: 85px;
+  text-align:center;
+  white-space:nowrap;
+}
+
+.row-check{
+  width:16px;
+  height:16px;
+  cursor:pointer;
+  accent-color:#ffffff; /* اختياري */
+}
+.archive-btn{
+  background:#1565c0;
+  color:white;
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+.archive-btn:hover{
+  opacity:0.9;
+}
+
 button{
     color:white;
     border:none;
@@ -147,10 +202,10 @@ transparent 70%
 /* تصغير المؤشرات */
 
 /* تقصير الصناديق */
-.mini-indicators .indicator-box{
-    width:100%;
-    padding:10px;
-    margin-bottom:8px;
+.mini-indicators{
+  width:100%;
+  max-width:100%;
+  display:block;
 }
 
 .indicator-box{
@@ -195,13 +250,10 @@ transparent 70%
 /* ===== النسخة النهائية المستقرة ===== */
 
 .stats-wrapper{
-    display:flex;
-    flex-direction:row-reverse;   /* مهم */
-    justify-content:center;
-    align-items:flex-start;
-    gap:40px;
-    margin:40px auto;
-    width:70%;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  width:100%;
 }
 
 
@@ -262,6 +314,8 @@ transparent 70%
     border-radius:15px;
     box-shadow:0 8px 25px rgba(0,0,0,.1);
     margin-bottom:20px;
+    width:100%;
+    box-sizing:border-box;
 }
 
 .class-absence-box h3{
@@ -275,10 +329,12 @@ transparent 70%
     align-items:flex-end;
     gap:15px;
     height:300px;
+    width:100%;
 }
 
 .class-bar-item{
     flex:1;
+    min-width:55px;
     text-align:center;
 }
 
@@ -301,9 +357,628 @@ transparent 70%
 }
 
 .bar-percent{
-    font-size:13px;
-    margin-bottom:5px;
-    font-weight:bold;
+  display:none; /* لأننا سنستخدم bar-top بدلاً منها */
+}
+/* ✅ النسب فوق العمود (سطرين) */
+.bar-top{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  font-size:13px;
+  font-weight:bold;
+  margin-bottom:6px;
+  line-height:1.1;
+}
+.top-abs{ color:#e53935; }   /* 🔴 غياب */
+.top-late{ color:#fbc02d; }  /* 🟡 تأخر */
+
+/* ✅ العمود الجديد (بديل bar-3d) */
+.bar-stack{
+  width:100%;
+  height:220px;                 /* 👈 مهم: هذا يمنع اختفاء العمود */
+  display:flex;                 /* 👈 مهم */
+  flex-direction:column;        /* 👈 مهم */
+  justify-content:flex-end;     /* 👈 مهم: يبدأ من أسفل */
+  border-radius:6px;
+  overflow:hidden;
+  box-shadow:
+    inset -6px -6px 12px rgba(0,0,0,.2),
+    inset 6px 6px 12px rgba(255,255,255,.1),
+    6px 6px 15px rgba(0,0,0,.25);
+}
+/* ✅ طبقات العمود */
+.seg{ width:100%; display:block; }
+.seg-abs{ background:linear-gradient(145deg,#e53935,#b71c1c); }
+.seg-late{ background:linear-gradient(145deg,#fbc02d,#f9a825); }
+
+/* ===== Absence Std Scroll ===== */
+
+.absence-std-scroll{
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding-bottom:10px;
+}
+
+.absence-std-inner{
+  min-width:100%;
+}
+
+.absence-std-scroll::-webkit-scrollbar{
+  height:8px;
+}
+
+.absence-std-scroll::-webkit-scrollbar-thumb{
+  background:#999;
+  border-radius:4px;
+}
+/* ===== Positive Awards (pos-*) ===== */
+.pos-box{ padding:14px; }
+
+.pos-controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+  margin:10px 0 14px;
+}
+
+.pos-group{ display:flex; gap:8px; flex-wrap:wrap; }
+
+.pos-btn{
+  background:#e9eef6;
+  color:#0b2b4a;
+  border:1px solid rgba(0,0,0,.08);
+  padding:6px 10px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:13px;
+  margin:0;
+}
+
+.pos-btn:hover{ filter:brightness(0.98); }
+
+.pos-btn.active{
+  background:#1565c0;
+  color:#fff;
+  border-color:transparent;
+}
+
+.pos-total{
+  font-size:13px;
+  background:#f6f8fc;
+  padding:6px 10px;
+  border-radius:10px;
+  border:1px solid rgba(0,0,0,.06);
+}
+
+.pos-cards{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:12px;
+}
+
+@media(max-width: 1100px){
+  .pos-cards{ grid-template-columns:1fr; }
+}
+
+.pos-card{
+  position:relative;
+  background:#fff;
+  border-radius:14px;
+  padding:12px;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.08),
+    inset 0 1px 0 rgba(255,255,255,.35),
+    inset 0 -5px 10px rgba(0,0,0,.04);
+  overflow:hidden;
+}
+
+.pos-card::before{
+  content:"";
+  position:absolute;
+  top:8px;
+  left:10px;
+  right:10px;
+  height:28%;
+  border-radius:12px;
+  background:linear-gradient(
+    to bottom,
+    rgba(255,255,255,.26),
+    rgba(255,255,255,.08),
+    transparent
+  );
+  pointer-events:none;
+}
+
+.pos-head{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:10px;
+  position:relative;
+  z-index:1;
+}
+
+.pos-icon{
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  font-size:22px;
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,.30),
+    inset 0 -3px 6px rgba(0,0,0,.08);
+}
+
+.pos-title{
+  font-weight:700;
+  font-size:14px;
+}
+
+.pos-sub{
+  font-size:12px;
+  opacity:.75;
+  margin-top:2px;
+}
+
+.pos-list{
+  font-size:13px;
+  line-height:1.7;
+  position:relative;
+  z-index:1;
+  max-height:140px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding-left:4px;
+}
+
+.pos-item{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:6px 8px;
+  border-radius:10px;
+  background:rgba(255,255,255,.55);
+  margin-bottom:6px;
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,.28),
+    inset 0 -2px 5px rgba(0,0,0,.05);
+}
+
+.pos-item b{
+  font-weight:700;
+}
+
+.pos-count{
+  background:#ffffff;
+  border:1px solid rgba(0,0,0,.06);
+  padding:2px 8px;
+  border-radius:999px;
+  font-size:12px;
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,.30),
+    inset 0 -2px 4px rgba(0,0,0,.04);
+}
+
+.pos-gold{
+  background:linear-gradient(180deg,#fffaf0 0%, #ffe082 100%);
+}
+
+.pos-silver{
+  background:linear-gradient(180deg,#f8fafc 0%, #dbe4ee 100%);
+}
+
+.pos-bronze{
+  background:linear-gradient(180deg,#fff3e0 0%, #ffcc80 100%);
+}
+
+.pos-gold .pos-icon{
+  background:rgba(255,193,7,.22);
+}
+
+.pos-silver .pos-icon{
+  background:rgba(120,144,156,.20);
+}
+
+.pos-bronze .pos-icon{
+  background:rgba(255,87,34,.18);
+}
+
+.pos-hide-student .pos-ribbon:first-child{
+  display:none;
+}
+.pos-ribbon{ display:none; }
+
+.pos-list::-webkit-scrollbar{
+  width:8px;
+}
+
+.pos-list::-webkit-scrollbar-thumb{
+  background:rgba(0,0,0,.18);
+  border-radius:8px;
+}
+
+.pos-list::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.25);
+  border-radius:8px;
+}
+/* ===== مؤشر التدخل التربوي - تصميم أفقي كامل ===== */
+.intervention-strip{
+  width:100%;
+  background:#fff;
+  border-radius:20px;
+  padding:16px 18px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  box-sizing:border-box;
+  grid-column:1 / -1;
+}
+
+.intervention-strip-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+
+.intervention-strip-title{
+  font-size:22px;
+  font-weight:700;
+  color:#102a43;
+}
+
+.intervention-strip-filters{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.itv-strip-btn{
+  background:#eef3f9;
+  color:#102a43;
+  border:1px solid #d9e2ef;
+  padding:6px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:12px;
+  margin:0;
+}
+
+.itv-strip-btn.active{
+  background:#1565c0;
+  color:#fff;
+  border-color:#1565c0;
+}
+
+.intervention-strip-body{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:14px;
+  width:100%;
+}
+
+.itv-strip-col{
+  min-height:250px;
+  border-radius:18px;
+  padding:14px;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  box-sizing:border-box;
+  box-shadow:
+    0 10px 18px rgba(0,0,0,.10),
+    inset 0 1px 0 rgba(255,255,255,.20);
+}
+
+.urgent-col{
+  background:linear-gradient(135deg,#d32f2f,#ef5350);
+}
+
+.follow-col{
+  background:linear-gradient(135deg,#ef8f00,#f6b100);
+}
+
+.stable-col{
+  background:linear-gradient(135deg,#2e7d32,#43a047);
+}
+
+.itv-strip-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.itv-strip-icon{
+  font-size:24px;
+}
+
+.itv-strip-count{
+  font-size:38px;
+  font-weight:700;
+  line-height:1;
+}
+
+.itv-strip-label{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+.itv-strip-list{
+  flex:1;
+  background:rgba(255,255,255,.16);
+  border-radius:12px;
+  padding:8px;
+  max-height:170px;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+.itv-strip-item{
+  background:rgba(255,255,255,.20);
+  border-radius:10px;
+  padding:8px 10px;
+  margin-bottom:6px;
+  font-size:13px;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.itv-strip-item:last-child{
+  margin-bottom:0;
+}
+
+.itv-strip-list::-webkit-scrollbar{
+  width:8px;
+}
+
+.itv-strip-list::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.45);
+  border-radius:8px;
+}
+
+.itv-strip-list::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.12);
+  border-radius:8px;
+}
+
+@media (max-width: 1100px){
+  .intervention-strip-body{
+    grid-template-columns:1fr;
+  }
+}
+
+.absence-box{
+  transform:translateX(-100px);
+}
+.absence-box{
+  margin-top:0;
+}
+.late-box{
+  transform:translateX(-800px);
+}
+.late-box{
+  margin-top:-215px;
+}
+
+/* ===== البطاقات العلوية ===== */
+.top-summary-cards{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:14px;
+  margin:18px 0 16px;
+}
+
+.summary-card{
+  background:#fff;
+  border-radius:14px;
+  padding:14px 16px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+  border:1px solid #e7edf5;
+}
+
+.summary-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+  font-weight:700;
+  color:#102a43;
+  font-size:15px;
+}
+
+.summary-icon{
+  font-size:20px;
+}
+
+.summary-number{
+  font-size:42px;
+  font-weight:700;
+  line-height:1.1;
+  text-align:center;
+  margin:8px 0 6px;
+}
+
+.summary-sub{
+  text-align:center;
+  font-size:13px;
+  font-weight:700;
+}
+
+.total-card{
+  background:#ffffff;
+}
+.total-card .summary-number,
+.total-card .summary-sub{
+  color:#1565c0;
+}
+
+.abs-card{
+  background:#fff7f7;
+}
+.abs-card .summary-number,
+.abs-card .summary-sub{
+  color:#e53935;
+}
+
+.late-card{
+  background:#fffaf0;
+}
+.late-card .summary-number,
+.late-card .summary-sub{
+  color:#ef8f00;
+}
+
+.pos-card-top{
+  background:#f5fbf6;
+}
+.pos-card-top .summary-number,
+.pos-card-top .summary-sub{
+  color:#2e7d32;
+}
+
+@media (max-width: 1100px){
+  .top-summary-cards{
+    grid-template-columns:repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px){
+  .top-summary-cards{
+    grid-template-columns:1fr;
+  }
+}
+
+.top-dashboard-wrap{
+  background:#fff;
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+  margin-bottom:14px;
+}
+
+.top-dashboard-wrap .top-summary-cards{
+  margin:0 0 14px 0;
+}
+
+.top-dashboard-wrap .top-buttons{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  padding-top:10px;
+  border-top:1px solid #e7edf5;
+}
+
+.bottom-bulk-actions{
+  margin-top:14px;
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  background:#f8fbff;
+  border:1px solid #d9e2ef;
+  padding:10px 12px;
+  border-radius:12px;
+}
+
+.total-box{
+  display:none;
+}
+
+/* ===== ميزة الجوال فقط ===== */
+#mobileOnlyFeature{
+  display:none;
+}
+
+@media (max-width:768px) and (pointer:coarse){
+  #mobileOnlyFeature{
+    display:block !important;
+  }
+}
+
+#mobileOnlyFeature{
+  position:fixed;
+  right:14px;
+  bottom:14px;
+  z-index:2147483647;
+}
+
+#mobileQuickBtn{
+  border:none;
+  border-radius:14px;
+  padding:12px 16px;
+  background:#1976d2;
+  color:#fff;
+  font-family:Tahoma;
+  font-size:14px;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
+}
+
+#mobilePanel{
+  position:fixed;
+  right:14px;
+  left:14px;
+  bottom:70px;
+  z-index:2147483647;
+}
+
+.mobile-panel-card{
+  width:100%;
+  max-width:420px;
+  margin-right:auto;
+  margin-left:auto;
+  background:#fff;
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 14px 30px rgba(0,0,0,.18);
+  border:1px solid #d9e2ef;
+}
+
+.mobile-panel-title{
+  font-weight:700;
+  font-size:14px;
+  margin-bottom:6px;
+  color:#102a43;
+}
+
+.mobile-panel-text{
+  font-size:13px;
+  color:#627d98;
+}
+
+.mobile-panel-actions{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.mobile-panel-btn{
+  border:none;
+  border-radius:10px;
+  padding:10px 12px;
+  background:#eef3f9;
+  color:#102a43;
+  font-family:Tahoma;
+  font-size:13px;
+  cursor:pointer;
+  text-align:right;
+}
+
+.mobile-panel-btn:hover{
+  background:#dde8f5;
 }
 
 </style>
@@ -318,128 +993,291 @@ transparent 70%
 </div>
 </div>
 
-<!-- شعار حقوق الحفظ -->
+<!-- ===== البطاقات العلوية السريعة ===== -->
+  <div class="top-summary-cards">
+
+    <div class="summary-card total-card">
+      <div class="summary-head">
+        <span class="summary-title">إجمالي الطلاب</span>
+        <span class="summary-icon">👥</span>
+      </div>
+      <div class="summary-number" id="topTotalStudents">0</div>
+      <div class="summary-sub">إجمالي الطلاب المسجلين</div>
+    </div>
+
+    <div class="summary-card abs-card">
+      <div class="summary-head">
+        <span class="summary-title">إجمالي الغياب اليوم</span>
+        <span class="summary-icon">❌</span>
+      </div>
+      <div class="summary-number" id="topAbsencesToday">0</div>
+      <div class="summary-sub">إجمالي الغياب اليوم</div>
+    </div>
+
+    <div class="summary-card late-card">
+      <div class="summary-head">
+        <span class="summary-title">إجمالي التأخر اليوم</span>
+        <span class="summary-icon">⏰</span>
+      </div>
+      <div class="summary-number" id="topLateToday">0</div>
+      <div class="summary-sub">إجمالي التأخر اليوم</div>
+    </div>
+
+    <div class="summary-card vio-card">
+      <div class="summary-head">
+        <span class="summary-title">إجمالي المخالفات اليوم</span>
+        <span class="summary-icon">⚠️</span>
+      </div>
+      <div class="summary-number" id="topViolationsToday">0</div>
+      <div class="summary-sub">المخالفات السلوكية اليوم</div>
+    </div>
+
+  </div>
+
+  <!-- ===== الأزرار أسفل البطاقات ===== -->
+  <div class="top-buttons">
+    <button class="qr" onclick="window.open('qrcodes.html')">📷 طباعة الباركود</button>
+    <button class="excel" onclick="exportExcel()">📊 تصدير Excel</button>
+    <button class="excel" onclick="checkDuplicateStudentsOnly()">🔍 فحص الأسماء المكررة</button>
+    <button onclick="window.archiveTodayData()" class="archive-btn">📦 أرشفة اليوم</button>
+
+
 <div class="copyright-badge">
-    © 2026 حامد العبيـدي – جميع الحقوق محفوظة
+    <div>© 2026 حامد العبيـدي – جميع الحقوق محفوظة</div>
+    <div class="version-badge">الإصدار: v1.0.0 Stable</div>
 </div>
 
 <div class="class-absence-box">
 
-    <h3>📊 نسبة الغياب حسب الفصول</h3>
+    <h3>📊 نسبة الغياب حسب الفصول <span id="classAbsenceTotals"></span></h3>
     <div class="class-bars" id="classAbsenceChart"></div>
 </div>
 
-<div class="top-buttons">
-<button class="qr" onclick="window.open('qrcodes.html')">📷 طباعة الباركود</button>
-<button class="excel" onclick="exportExcel()">📊 تصدير Excel</button>
-<button class="excel" onclick="checkDuplicateStudentsOnly()">🔍 فحص الأسماء المكررة</button>
-</div>
 
+</div>
 <div class="total-box">
 إجمالي عدد الطلاب المسجلين: <span id="totalStudents">0</span>
 </div>
-
 <!-- ======== قسم الدائرة الاحترافية + المؤشرات ======== -->
 <div class="stats-wrapper">
+ 
+  <!-- ===== مؤشر السلوك المتميز (جوائز) ===== -->
+  <div class="indicator-box pos-box">
+    <div class="indicator-title">🏅 مؤشر السلوك المتميز</div>
 
-    <!-- 🔵 الدائرة يسار -->
-    <div class="pie-container">
-        <canvas id="disciplineChart"
-style="filter:drop-shadow(0 10px 20px rgba(0,0,0,0.25));">
-</canvas>
-        <div class="chart-center" id="chartTotal">0<br>طالب</div>
+    <div class="pos-controls">
+      <div class="pos-group">
+        <button class="pos-btn" id="posTargetStudents" onclick="window.switchPosTarget('students')">طلاب</button>
+        <button class="pos-btn" id="posTargetClasses" onclick="window.switchPosTarget('classes')">فصول</button>
+      </div>
+
+      <div class="pos-group">
+        <button class="pos-btn" id="posPeriodDay" onclick="window.switchPosPeriod('day')">يومي</button>
+        <button class="pos-btn" id="posPeriodWeek" onclick="window.switchPosPeriod('week')">أسبوعي</button>
+        <button class="pos-btn" id="posPeriodMonth" onclick="window.switchPosPeriod('month')">شهري</button>
+        <button class="pos-btn" id="posPeriodYear" onclick="window.switchPosPeriod('year')">سنوي</button>
+      </div>
+
+      <div class="pos-total" id="posTotalText">—</div>
+    </div>
+  
+    <div class="pos-cards">
+      <!-- 🏆 ذهب -->
+      <div class="pos-card pos-gold">
+        <div class="pos-head">
+          <div class="pos-icon">🏆</div>
+          <div>
+            <div class="pos-title">المركز الأول</div>
+            <div class="pos-sub" id="posGoldSub">—</div>
+          </div>
+        </div>
+
+        <div class="pos-ribbons">
+          <div class="pos-ribbon" id="posGoldStudent">—</div>
+          <div class="pos-ribbon" id="posGoldClass">—</div>
+        </div>
+
+        <div class="pos-list" id="posGoldList"></div>
+      </div>
+
+      <!-- 🥈 فضة -->
+      <div class="pos-card pos-silver">
+        <div class="pos-head">
+          <div class="pos-icon">🥈</div>
+          <div>
+            <div class="pos-title">المركز الثاني</div>
+            <div class="pos-sub" id="posSilverSub">—</div>
+          </div>
+        </div>
+
+        <div class="pos-ribbons">
+          <div class="pos-ribbon" id="posSilverStudent">—</div>
+          <div class="pos-ribbon" id="posSilverClass">—</div>
+        </div>
+
+        <div class="pos-list" id="posSilverList"></div>
+      </div>
+
+      <!-- 🥉 برونز -->
+      <div class="pos-card pos-bronze">
+        <div class="pos-head">
+          <div class="pos-icon">🥉</div>
+          <div>
+            <div class="pos-title">المركز الثالث</div>
+            <div class="pos-sub" id="posBronzeSub">—</div>
+          </div>
+        </div>
+
+        <div class="pos-ribbons">
+          <div class="pos-ribbon" id="posBronzeStudent">—</div>
+          <div class="pos-ribbon" id="posBronzeClass">—</div>
+        </div>
+
+        <div class="pos-list" id="posBronzeList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔵 المؤشرات يمين -->
+  <div class="mini-indicators">
+    <!-- ===== مؤشر الغياب ===== -->
+    <div class="absence-box">
+  <div class="indicator-box">📌 مؤشر الغياب</div>
+
+      <div class="progress-row">
+        <div class="progress-label">يومي</div>
+        <div class="progress-bar">
+          <div id="absDayBar" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="progress-row">
+        <div class="progress-label">أسبوعي</div>
+        <div class="progress-bar">
+          <div id="absWeekBar" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="progress-row">
+        <div class="progress-label">شهري</div>
+        <div class="progress-bar">
+          <div id="absMonthBar" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="progress-row">
+        <div class="progress-label">سنوي</div>
+        <div class="progress-bar">
+          <div id="absYearBar" class="progress-fill"></div>
+        </div>
+      </div>
     </div>
 
-    <!-- 🔵 المؤشرات يمين -->
-    <div class="mini-indicators">
+    <!-- ===== مؤشر التأخر ===== -->
+   <div class="late-box">
+  <div class="indicator-box">⏰ مؤشر التأخر الصباحي</div>
 
-        <!-- ===== مؤشر الغياب ===== -->
-        <div class="indicator-box">
-            <div class="indicator-title">📌 مؤشر الغياب</div>
-
-            <div class="progress-row">
-                <div class="progress-label">يومي</div>
-                <div class="progress-bar">
-                    <div id="absDayBar" class="progress-fill"></div>
-                </div>
-            </div>
-
-            <div class="progress-row">
-                <div class="progress-label">أسبوعي</div>
-                <div class="progress-bar">
-                    <div id="absWeekBar" class="progress-fill"></div>
-                </div>
-            </div>
-
-            <div class="progress-row">
-                <div class="progress-label">شهري</div>
-                <div class="progress-bar">
-                    <div id="absMonthBar" class="progress-fill"></div>
-                </div>
-            </div>
-
-            <div class="progress-row">
-                <div class="progress-label">سنوي</div>
-                <div class="progress-bar">
-                    <div id="absYearBar" class="progress-fill"></div>
-                </div>
-            </div>
+      <div class="progress-row">
+        <div class="progress-label">يومي</div>
+        <div class="progress-bar">
+          <div id="lateDayBar" class="progress-fill"></div>
         </div>
+      </div>
 
-        <!-- ===== مؤشر التأخر ===== -->
-        <div class="indicator-box">
-            <div class="indicator-title">⏰ مؤشر التأخر الصباحي</div>
-
-            <div class="progress-row">
-                <div class="progress-label">يومي</div>
-                <div class="progress-bar">
-                    <div id="lateDayBar" class="progress-fill"></div>
-                </div>
-            </div>
-
-            <div class="progress-row">
-                <div class="progress-label">أسبوعي</div>
-                <div class="progress-bar">
-                    <div id="lateWeekBar" class="progress-fill"></div>
-                </div>
-            </div>
-
-            <div class="progress-row">
-                <div class="progress-label">شهري</div>
-                <div class="progress-bar">
-                    <div id="lateMonthBar" class="progress-fill"></div>
-                </div>
-            </div>
-
-            <div class="progress-row">
-                <div class="progress-label">سنوي</div>
-                <div class="progress-bar">
-                    <div id="lateYearBar" class="progress-fill"></div>
-                </div>
-            </div>
+      <div class="progress-row">
+        <div class="progress-label">أسبوعي</div>
+        <div class="progress-bar">
+          <div id="lateWeekBar" class="progress-fill"></div>
         </div>
+      </div>
 
+      <div class="progress-row">
+        <div class="progress-label">شهري</div>
+        <div class="progress-bar">
+          <div id="lateMonthBar" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="progress-row">
+        <div class="progress-label">سنوي</div>
+        <div class="progress-bar">
+          <div id="lateYearBar" class="progress-fill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== مؤشر التدخل التربوي - خارج mini-indicators ===== -->
+  <div class="intervention-strip">
+    <div class="intervention-strip-head">
+      <div class="intervention-strip-title">🎯 مؤشر التدخل التربوي</div>
+
+      <div class="intervention-strip-filters">
+        <button class="itv-strip-btn active" id="itvDayBtn" onclick="window.setInterventionPeriod('day')">يومي</button>
+        <button class="itv-strip-btn" id="itvWeekBtn" onclick="window.setInterventionPeriod('week')">أسبوعي</button>
+        <button class="itv-strip-btn" id="itvMonthBtn" onclick="window.setInterventionPeriod('month')">شهري</button>
+      </div>
+    </div>
+
+    <div class="intervention-strip-body">
+      <div class="itv-strip-col urgent-col">
+        <div class="itv-strip-top">
+          <span class="itv-strip-icon">⚠️</span>
+          <span class="itv-strip-count" id="urgentCount">0</span>
+        </div>
+        <div class="itv-strip-label">يحتاج تدخل عاجل</div>
+        <div class="itv-strip-list" id="urgentList">
+          <div class="itv-strip-item">—</div>
+        </div>
+      </div>
+
+      <div class="itv-strip-col follow-col">
+        <div class="itv-strip-top">
+          <span class="itv-strip-icon">👀</span>
+          <span class="itv-strip-count" id="followCount">0</span>
+        </div>
+        <div class="itv-strip-label">يحتاج متابعة</div>
+        <div class="itv-strip-list" id="followList">
+          <div class="itv-strip-item">—</div>
+        </div>
+      </div>
+
+      <div class="itv-strip-col stable-col">
+        <div class="itv-strip-top">
+          <span class="itv-strip-icon">✅</span>
+          <span class="itv-strip-count" id="stableCount">0</span>
+        </div>
+        <div class="itv-strip-label">مستقر</div>
+        <div class="itv-strip-list" id="stableList">
+          <div class="itv-strip-item">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+        
     </div>
 </div>
 <div class="card">
     <div class="card">
-<h3>🚨 مؤشر الانحراف للمخالفات السلوكية</h3>
+<h3>🚨 مؤشر الاستقرار السلوكي</h3>
 <div id="riskLegend" style="display:flex;gap:15px;margin:10px 0;font-size:14px">
 
 <div style="display:flex;align-items:center;gap:5px">
-<span style="width:15px;height:15px;background:#dc3545;display:inline-block;border-radius:3px"></span>
-عالي الخطورة
-</div>
+    <span style="width:15px;height:15px;background:#dc3545;display:inline-block;border-radius:3px"></span>
+    عالي الخطورة (7+)
+  </div>
 
-<div style="display:flex;align-items:center;gap:5px">
-<span style="width:15px;height:15px;background:#ffc107;display:inline-block;border-radius:3px"></span>
-متوسط الخطورة
-</div>
+  <div style="display:flex;align-items:center;gap:5px">
+    <span style="width:15px;height:15px;background:#ffc107;display:inline-block;border-radius:3px"></span>
+    متوسط الخطورة (4–6)
+  </div>
 
-<div style="display:flex;align-items:center;gap:5px">
-<span style="width:15px;height:15px;background:#0d6efd;display:inline-block;border-radius:3px"></span>
-منخفض الخطورة
-</div>
+  <div style="display:flex;align-items:center;gap:5px">
+    <span style="width:15px;height:15px;background:#0d6efd;display:inline-block;border-radius:3px"></span>
+    منخفض الخطورة (1–3)
+  </div>
 
 </div>
 
@@ -449,32 +1287,32 @@ style="filter:drop-shadow(0 10px 20px rgba(0,0,0,0.25));">
 <div class="card" id="absenceStdCard" style="margin:20px 0">
 
   <div class="card-header">
-    <h3>مؤشر الانحراف المعياري للغياب</h3>
+    <h3>مؤشر أنتظام الحضور <span id="absenceTotal"></span></h3>
     <div id="absenceLegend"
 style="display:flex;gap:15px;margin:10px 0;font-size:13px">
 
 <div style="display:flex;align-items:center;gap:5px">
 <span style="width:14px;height:14px;background:#4caf50;
 display:inline-block;border-radius:3px"></span>
-طبيعي (1-2)
+(2-1) منتظم
 </div>
 
 <div style="display:flex;align-items:center;gap:5px">
 <span style="width:14px;height:14px;background:#ffc107;
 display:inline-block;border-radius:3px"></span>
-بداية انحراف (3-5)
+(5-3) تنبيه أولي
 </div>
 
 <div style="display:flex;align-items:center;gap:5px">
 <span style="width:14px;height:14px;background:#ff9800;
 display:inline-block;border-radius:3px"></span>
-خطر (6-7)
+(7-6) متكرر غياب
 </div>
 
 <div style="display:flex;align-items:center;gap:5px">
 <span style="width:14px;height:14px;background:#e53935;
 display:inline-block;border-radius:3px"></span>
-حرج (8+)
+(+8) مرتفع الغياب
 </div>
 
 </div>
@@ -498,10 +1336,10 @@ display:inline-block;border-radius:3px"></span>
 
     </div>
 
-    <canvas id="absenceStdChart" height="100"></canvas>
-
+    <div class="absence-std-scroll">
+  <div class="absence-std-inner" style="height:300px;">
+    <canvas id="absenceStdChart"></canvas>
   </div>
-
 </div>
     <h3>السجلات</h3>
 
@@ -509,6 +1347,8 @@ display:inline-block;border-radius:3px"></span>
         <table>
             <thead>
                 <tr>
+                    <th class="chk">بعذر</th>
+                    <th class="chk">بدون عذر</th>
                     <th>التاريخ</th>
                     <th>الطالب</th>
                     <th>المعلم</th>
@@ -523,8 +1363,18 @@ display:inline-block;border-radius:3px"></span>
     </div>
 
 </div>
+<tbody id="dataBody"></tbody>
+</table>
+</div>
+
+<div class="bulk-actions bottom-bulk-actions">
+  <button onclick="printSelected()">🖨️ طباعة المحدد</button>
+  <button onclick="deleteSelected()">🗑️ حذف المحدد</button>
+  <span id="bulkCounter">المحدد: 0</span>
+</div>
 
 <script type="module">
+
 
 let absenceStdChart;
 
@@ -556,12 +1406,13 @@ else{
 start = new Date(now.getFullYear(),0,1,0,0,0,0);
 }
 
-allData.forEach(r=>{
+const { all: statsAllData } = window.getStatsData();
+statsAllData.forEach(r=>{
 
-if(r.status!=="غياب") return;
-if(!r.date?.seconds) return;
+if(r.status !== "غياب") return;
 
-const d = new Date(r.date.seconds*1000);
+const d = getRecordDateRiyadh(r);
+if(!d) return;
 if(d<start) return;
 
 let key;
@@ -577,6 +1428,14 @@ index[key]++;
 
 });
 
+// حساب إجمالي عدد مرات الغياب
+let totalAbsences = Object.values(index).reduce((a,b)=>a+b,0);
+
+// عرض الرقم بجانب العنوان
+document.getElementById("absenceTotal").innerText =
+" (إجمالي الغياب: " + totalAbsences + ")";
+
+// رسم الشارت
 drawAbsenceStdChart(index);
 
 }
@@ -584,16 +1443,16 @@ drawAbsenceStdChart(index);
 function classifyAbsenceDeviation(z){
 
 if(z <= 0.5){
-return {text:"🟢 طبيعي", color:"#4caf50"};
+return {text:"🟢 منتظم", color:"#4caf50"};
 }
 else if(z <= 1){
-return {text:"🟡 بداية انحراف", color:"#ffc107"};
+return {text:"🟡 تنبيه أولي", color:"#ffc107"};
 }
 else if(z <= 2){
-return {text:"🟠 خطر", color:"#ff9800"};
+return {text:"🟠 متكرر غياب", color:"#ff9800"};
 }
 else{
-return {text:"🔴 حرج", color:"#e53935"};
+return {text:"🔴 مرتفع الغياب", color:"#e53935"};
 }
 
 }
@@ -601,16 +1460,16 @@ return {text:"🔴 حرج", color:"#e53935"};
 function classifyAbsenceCount(count){
 
 if(count <= 2){
-return {text:"🟢 طبيعي", color:"#4caf50"};
+return {text:"🟢 منتظم", color:"#4caf50"};
 }
 else if(count <= 5){
-return {text:"🟡 بداية انحراف", color:"#ffc107"};
+return {text:"🟡 تنبيه أولي", color:"#ffc107"};
 }
 else if(count <= 7){
-return {text:"🟠 خطر", color:"#ff9800"};
+return {text:"🟠 متكرر غياب", color:"#ff9800"};
 }
 else{
-return {text:"🔴 حرج", color:"#e53935"};
+return {text:"🔴 مرتفع الغياب", color:"#e53935"};
 }
 
 }
@@ -625,9 +1484,23 @@ const colors=[];
 
 Object.keys(index)
 .sort((a,b)=>index[b]-index[a])
-.slice(0,10)
 .forEach(k=>{
+const chartWidth = labels.length * 60;
 
+const wrapper = document.querySelector(".absence-std-inner");
+
+if(wrapper){
+
+  wrapper.style.width = chartWidth + "px";
+
+  // 🔴 مهم جداً: إعادة قياس الشارت بعد التمديد
+  setTimeout(()=>{
+    if(absenceStdChart){
+      absenceStdChart.resize();
+    }
+  },100);
+
+}
   const count = index[k];
   const risk = classifyAbsenceCount(count);
 
@@ -661,16 +1534,23 @@ barThickness:16
 },
 
 options:{
-responsive:true,
+responsive:false,
+maintainAspectRatio:false,
 plugins:{
 legend:{display:false}
 },
+layout:{
+    padding:10
+  },
 animation:{
 duration:900
 },
 scales:{
 x:{
-grid:{display:false}
+  grid:{display:false},
+  ticks:{
+    autoSkip:false
+  }
 },
 y:{
 beginAtZero:true,
@@ -694,7 +1574,8 @@ import {
   where,
   onSnapshot,
   deleteDoc,
-  doc
+  doc,
+  setDoc
 } from 
 "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -707,14 +1588,334 @@ const firebaseConfig = {
   authDomain: "discipline-school.firebaseapp.com",
   projectId: "discipline-school"
 };
-
+window.firebaseConfig = firebaseConfig;
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+// ✅ Polyfill/Wrapper: getAllDocs يقبل (اسم collection) أو (collectionRef)
+window.getAllDocs = window.getAllDocs || async function getAllDocs(colOrRef){
+  // 1) لو جاء نص مثل "attendance_archive" نحوله إلى collection(db, name)
+  if (typeof colOrRef === "string") {
+    const _db = (typeof db !== "undefined") ? db : window.db;
+    if(!_db) throw new Error("db غير متاح داخل getAllDocs");
+    colOrRef = collection(_db, colOrRef);
+  }
+
+  // 2) الآن صار عندنا CollectionReference
+  const snap = await getDocs(colOrRef);
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+};
+// ✅ Archive Cache (تحميل مرة واحدة فقط)
+window.__archiveCache = {
+  attendance: null,
+  violations: null,
+  loaded: false,
+  loading: null
+};
+
+
+
+// ✅ تحميل الأرشيف مرة واحدة ثم استخدامه في المؤشرات
+window.loadArchiveOnce = async function(){
+  if(window.__archiveCache.loaded) return window.__archiveCache;
+  if(window.__archiveCache.loading) return window.__archiveCache.loading;
+
+  window.__archiveCache.loading = (async ()=>{
+    // نفس دوالك الحالية إن كانت موجودة
+    // 👇 غيّر أسماء الدوال هنا حسب الموجود عندك
+    const att = await getAllDocs("attendance_archive"); 
+    const vio = await getAllDocs("violations_archive");
+
+    window.__archiveCache.attendance = Array.isArray(att) ? att : [];
+    window.__archiveCache.violations = Array.isArray(vio) ? vio : [];
+    window.__archiveCache.loaded = true;
+
+    
+    // ✅ بعد اكتمال تحميل الأرشيف: أعد حساب المؤشرات فوراً
+   try{ combineData?.(); }catch(e){}
+   try{ calculateStats?.(); }catch(e){}
+   try{ window.buildAbsenceStdIndex?.(); }catch(e){}
+
+    return window.__archiveCache;
+
+  })();
+
+  return window.__archiveCache.loading;
+ };
+// 👇 الصق البلوك هنا مباشرة
+// ===============================
+// ✅ Safe Bridge Layer (GLOBAL)
+// ===============================
+window.db = window.db || (typeof db !== "undefined" ? db : null);
+
+window.attendanceData = window.attendanceData || [];
+window.violationsData = window.violationsData || [];
+window.allData = window.allData || [];
+
+window.ensureAllData = window.ensureAllData || function ensureAllData(){
+  const a = Array.isArray(window.attendanceData) ? window.attendanceData : [];
+  const v = Array.isArray(window.violationsData) ? window.violationsData : [];
+  window.allData = [...a, ...v];
+  return window.allData;
+};
+
+window.combineData = window.combineData || function(){
+  return window.ensureAllData();
+};
+
+// ===== PATCH آمن لضمان وجود allData =====
+window.ensureAllData = function(){
+  const a = Array.isArray(window.attendanceData) ? window.attendanceData : [];
+  const v = Array.isArray(window.violationsData) ? window.violationsData : [];
+  window.allData = [...a, ...v];
+  return window.allData;
+};
+
+// ===============================
+// ✅ Data Provider (GLOBAL on window)
+// ===============================
+window.getStatsData = function getStatsData(){
+
+  const attLive = Array.isArray(attendanceData) ? attendanceData : [];
+  const vioLive = Array.isArray(violationsData) ? violationsData : [];
+
+  const attArc = Array.isArray(window.__archiveCache?.attendance) ? window.__archiveCache.attendance : [];
+  const vioArc = Array.isArray(window.__archiveCache?.violations) ? window.__archiveCache.violations : [];
+
+  // منع التكرار
+  const seen = new Set();
+  const keyOf = (r)=>
+    r?.id || r?.docId || r?._id || r?.uniqueId ||
+    [r?.date?.seconds, r?.stage, r?.classNum, r?.student, r?.status, r?.violationType, r?.category].join("|");
+
+  const merge = (arr)=>{
+    const out=[];
+    for(const r of (arr||[])){
+      const k = keyOf(r);
+      if(seen.has(k)) continue;
+      seen.add(k);
+      out.push(r);
+    }
+    return out;
+  };
+
+  // ✅ توحيد status للغياب/المخالفة
+  const attAll = merge([...attLive, ...attArc]).map(r=>({
+  ...r,
+  __isAttendance: true,  // ✅ هذا السجل من attendance/attendance_archive
+  // ✅ لو ما عنده absence ولا status، نعتبره غياب (لأن attendance عندك = الغياب)
+  absence: (r.absence === true) ? true : (r.status ? (r.status === "غياب") : true),
+  // لا نفرض status هنا حتى لا نسبب مبالغة/تعارض
+  status: r.status
+}));
+
+  const vioAll = merge([...vioLive, ...vioArc]).map(r=>({
+    ...r,
+    status: r.status || "مخالفة"
+  }));
+
+  const allMerged = [...attAll, ...vioAll];
+
+  return { all: allMerged, vio: vioAll };
+};
+
+// ===============================
+// ✅ Data Provider (Safe Add-on)
+// ===============================
+
+// 1) تحويل تاريخ Firestore Timestamp/Date/String إلى "YYYY-MM-DD"
+function toYMDAny(d){
+  try{
+    if(!d) return "";
+    // Firestore Timestamp
+    if(d?.seconds) return new Date(d.seconds*1000).toISOString().slice(0,10);
+    // JS Date
+    if(d instanceof Date) return d.toISOString().slice(0,10);
+    // String
+    if(typeof d === "string"){
+      // لو كان فيه وقت ISO
+      if(d.includes("T")) return d.slice(0,10);
+      // لو كان أصلاً YYYY-MM-DD
+      if(/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+      // محاولة تحويل عام
+      const dt = new Date(d);
+      if(!isNaN(dt)) return dt.toISOString().slice(0,10);
+    }
+  }catch(e){}
+  return "";
+}
+
+// 2) حساب نطاق التاريخ حسب الفترة (يومي/أسبوعي/شهري/سنوي)
+function getRange(period){
+  const now = new Date();
+  const end = new Date(now);
+  end.setHours(23,59,59,999);
+
+  let start = new Date(now);
+
+  if(period === "day"){
+    start.setHours(0,0,0,0);
+  } else if(period === "week"){
+    // أسبوع = آخر 7 أيام
+    start.setDate(start.getDate() - 6);
+    start.setHours(0,0,0,0);
+  } else if(period === "month"){
+    // آخر 30 يوم (آمن وبسيط)
+    start.setDate(start.getDate() - 29);
+    start.setHours(0,0,0,0);
+  } else if(period === "year"){
+    // آخر 365 يوم
+    start.setDate(start.getDate() - 364);
+    start.setHours(0,0,0,0);
+  } else {
+    // default day
+    start.setHours(0,0,0,0);
+  }
+
+  return {
+    startYMD: start.toISOString().slice(0,10),
+    endYMD: end.toISOString().slice(0,10),
+  };
+}
+
+// 3) تطبيع سجل الحضور/التأخر: نرجعه بشكل يتوافق مع نظامك الحالي
+function normalizeAttendance(r){
+  const ymd = toYMDAny(r.date) || toYMDAny(r.createdAt) || toYMDAny(r.timestamp) || "";
+  const out = { ...r };
+
+  // حافظ على مفاتيح النظام القديم إن كانت موجودة
+  out.dateYMD = ymd;
+
+  // توحيد الحالات بدون كسر أي منطق سابق:
+  // - لو عندك absence/late موجودة اتركها
+  // - لو عندك status نصي استخدمه كمساعدة
+  if(out.absence === undefined && typeof out.status === "string"){
+    out.absence = (out.status === "غياب");
+  }
+  if(out.late === undefined && typeof out.status === "string"){
+    out.late = (out.status === "تأخر صباحي");
+  }
+
+  return out;
+}
+
+// 4) تطبيع سجل المخالفات
+function normalizeViolation(r){
+  const ymd = toYMDAny(r.date) || toYMDAny(r.createdAt) || toYMDAny(r.timestamp) || "";
+  return { ...r, dateYMD: ymd };
+}
+
+// 5) فلترة حسب نطاق YMD (بدون الاعتماد على where/firestore indexes لتجنب أعطال)
+function filterByRange(list, startYMD, endYMD){
+  return (list || []).filter(r=>{
+    const y = r.dateYMD || toYMDAny(r.date) || "";
+    return y && y >= startYMD && y <= endYMD;
+  });
+}
+
+// 6) قراءة Collection كاملة (بسيطة وآمنة) — تقدر لاحقاً تحسنها بـ query/index
+async function readAll(colName){
+  const snap = await getDocs(collection(db, colName));
+  return snap.docs.map(d => ({ docId: d.id, ...d.data() }));
+}
+
+// ✅ HYBRID + DEDUPE: DAY = LIVE فقط | WEEK/MONTH/YEAR = ARCHIVE + LIVE بدون تكرار
+// ===============================
+// ✅ FINAL: Load Data By Period
+// day  = LIVE only
+// week/month/year = LIVE + ARCHIVE (dedupe)
+// ===============================
+async function loadPeriodData(period){
+  // period: "day" | "week" | "month" | "year"
+  period = ["day","week","month","year"].includes(period) ? period : "day";
+
+  // ✅ 1) Load archive only for non-day
+  if(period !== "day"){
+    if (typeof window.loadArchiveOnce === "function") {
+      await window.loadArchiveOnce(); // <-- هذا هو سطر "الشكل النهائي"
+    }
+  }
+
+  // ✅ 2) Read LIVE always (safe)
+  const safeReadLive = async (name) => {
+    try { return await readAll(name); } catch(e){ return []; }
+  };
+
+  const [attNow, vioNow] = await Promise.all([
+    safeReadLive("attendance"),
+    safeReadLive("violations"),
+  ]);
+
+  // ✅ 3) Archive arrays (only if loaded)
+  const attArc = (period !== "day" && Array.isArray(window.__archiveCache?.attendance)) ? window.__archiveCache.attendance : [];
+  const vioArc = (period !== "day" && Array.isArray(window.__archiveCache?.violations)) ? window.__archiveCache.violations : [];
+
+  // ✅ 4) Dedupe by stable key
+  const getKey = (r) =>
+    r?.id || r?.uniqueId || r?.docId || r?._id ||
+    [
+      (r?.date?.seconds ? `ts_${r.date.seconds}` : (r?.date || r?.gregorian || "")),
+      (r?.stage || ""),
+      (r?.classNum || r?.class || ""),
+      (r?.student || r?.studentName || ""),
+      (r?.status || r?.type || r?.category || r?.violationType || "")
+    ].join("|");
+
+  const dedupe = (arr) => {
+    const seen = new Set();
+    const out = [];
+    for(const r of (arr || [])){
+      const k = getKey(r);
+      if(seen.has(k)) continue;
+      seen.add(k);
+      out.push(r);
+    }
+    return out;
+  };
+
+  // ✅ 5) Merge per period
+  const attendanceMerged = (period === "day") ? (attNow || []) : dedupe([...(attArc||[]), ...(attNow||[])]);
+  const violationsMerged = (period === "day") ? (vioNow || []) : dedupe([...(vioArc||[]), ...(vioNow||[])]);
+
+  // ✅ 6) Normalize (keep your fields)
+  const attendanceAll = (attendanceMerged || []).map(normalizeAttendance);
+  const violationsAll = (violationsMerged || []).map(normalizeViolation);
+
+  // ✅ 7) Filter by period range
+  const { startYMD, endYMD } = getRange(period);
+  window.attendanceData = filterByRange(attendanceAll, startYMD, endYMD);
+  window.violationsData = filterByRange(violationsAll, startYMD, endYMD);
+
+  // ✅ 8) Rebuild allData + refresh indicators
+  if(typeof window.combineData === "function") window.combineData();
+  try{ calculateStats(); }catch(e){}
+  try{ window.buildAbsenceStdIndex?.(); }catch(e){}
+}
+
+// واجهة موحدة للأزرار/التبديل
+window.setDashboardPeriod = async function(period){
+  await loadPeriodData(period);
+};
+
+
+
+// 8) واجهة واحدة تستدعيها من أزرار اليومي/الأسبوعي/...
+window.setDashboardPeriod = async function(period){
+  // period: "day" | "week" | "month" | "year"
+  await loadPeriodData(period);
+};
 
 let violationsData = [];
 let attendanceData = [];
+let positiveData = [];
 let allData = [];
 let totalStudents = 0;
+
+window.addEventListener("load", async ()=>{
+  await loadArchiveOnce();   // تجهيز الأرشيف في الذاكرة
+  window.ensureAllData();    // بناء allData
+  setDashboardPeriod("day"); // تشغيل المؤشرات
+});
+
 /* ===== نطاقات اليوم والأسبوع الدراسي ===== */
 function getSchoolRangesMadina(){
 
@@ -728,7 +1929,7 @@ function getSchoolRangesMadina(){
     startOfDay.setHours(0,0,0,0);
 
     const endOfDay = new Date(saNow);
-    endOfDay.setHours(23,59,0,0);
+    endOfDay.setHours(23,59,59,999);
 
     const day = saNow.getDay();
     const diffToSunday = day;
@@ -739,7 +1940,7 @@ function getSchoolRangesMadina(){
 
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(startOfWeek.getDate() + 4);
-    endOfWeek.setHours(23,59,0,0);
+    endOfWeek.setHours(23,59,59,999);
 
     return {
         startOfDay,
@@ -759,47 +1960,80 @@ function calculateTotalStudents(){
 calculateTotalStudents();
 
 onSnapshot(collection(db,"violations"), snap=>{
-    violationsData=[];
-    snap.forEach(d=>{
-        violationsData.push({
-id:d.id,
-...d.data(),
-absence:false,
-status:"مخالفة"
-});
+  violationsData = [];
+
+  snap.forEach(d=>{
+    violationsData.push({               
+    ...d.data(),
+    id: d.id,
+      absence: false,
+      status: "مخالفة"
     });
-    combineData();
-    showRiskStudents();
+  });
 
+  combineData();
+  showRiskStudents();
+  renderPositiveAwards?.();
+  renderInterventionPanel?.();
 });
 
-onSnapshot(collection(db,"attendance"), snap=>{
-    attendanceData=[];
+onSnapshot(collection(db,"positive"), snap=>{
+  positiveData = [];
 
-    // بداية اليوم
-    const startOfDay = new Date();
-    startOfDay.setHours(0,0,0,0);
-
-    // نهاية الدوام 1:30
-    const schoolEndTime = new Date();
-    schoolEndTime.setHours(23,59,0,0);
-
-    snap.forEach(d=>{
-        const record = d.data();
-
-        if(record.date){
-            const recordDate = record.date.toDate();
-
-            // نحسب فقط الغياب قبل 1:30
-            if(recordDate >= startOfDay && recordDate <= schoolEndTime){
-                attendanceData.push({id:d.id,...record,absence:true});
-            }
-        }
+  snap.forEach(d=>{
+    positiveData.push({
+      ...d.data(),
+      id: d.id,
+      category: "السلوك المتميز"
     });
+  });
 
-    combineData();
-    showRiskStudents();
-    buildAbsenceStdIndex();
+  combineData();
+  renderPositiveAwards?.();
+});
+
+onSnapshot(collection(db,"attendance"), snap => {
+
+  attendanceData = [];
+
+  // بداية اليوم 9:30
+  const startOfDay = new Date();
+  startOfDay.setHours(0,0,0,0);
+
+  // نهاية الدوام 1:00
+  const schoolEndTime = new Date();
+  schoolEndTime.setHours(23,59,59,999);
+
+  snap.forEach(d => {
+
+    const record = d.data();
+
+    if(record.date){
+
+      const recordDate = record.date.toDate();
+
+      // نحسب فقط الغياب قبل 1:00
+      if(recordDate >= startOfDay && recordDate <= schoolEndTime){
+
+        attendanceData.push({
+  ...record,
+  id: d.id,
+  absence: true,
+  status: record.status || "غياب"   // ✅ سطر واحد يرجّع المؤشرات
+});
+
+      }
+
+    }
+
+  });
+
+  combineData();
+  showRiskStudents();
+  buildAbsenceStdIndex?.();
+  renderPositiveAwards?.();
+  renderInterventionPanel?.();
+
 });
 function calculateZScores(index){
 
@@ -815,9 +2049,7 @@ return sum + Math.pow(val-avg,2);
 
 let std = Math.sqrt(variance);
 
-if(std === 0){
-std = 0.0001;
-}
+std = Math.max(std,1);
 
 let result = {};
 
@@ -825,7 +2057,7 @@ Object.keys(index).forEach(id=>{
 
 let z = (index[id] - avg)/std;
 result[id] = z;
-console.log("Z-Score => ", id , index[id] , avg , std , z);
+//console.log("Z-Score => ", id , index[id] , avg , std , z);
 
 result[id] = z;
 
@@ -838,40 +2070,19 @@ return result;
 }
 
 function buildRiskIndexes(){
+  // ✅ مخالفات سلوكية فقط (بدون غياب وبدون تأخر)
+  const index = {};
 
-let behaviorIndex = {};
+  violationsData.forEach(r=>{
+    if(!r.student) return;
 
-violationsData.forEach(r=>{
+    const id = r.stage + "_" + r.classNum + "_" + r.student;
 
-if(!r.student) return;
+    if(!index[id]) index[id] = 0;
+    index[id] += 1; // ✅ كل مخالفة = 1
+  });
 
-let id = r.stage + "_" + r.classNum + "_" + r.student;
-
-if(!behaviorIndex[id]){
-behaviorIndex[id]=0;
-}
-
-behaviorIndex[id]+=1;
-
-});
-
-return behaviorIndex;
-
-}
-
-
-function classifyRisk(z){
-
-    if(z >= 1.5){
-        return {text:"عالي الخطورة",color:"#dc3545"}; // أحمر
-    }
-    else if(z >= 1){
-        return {text:"متوسط الخطورة",color:"#ffc107"}; // أصفر
-    }
-    else{
-        return {text:"منخفض الخطورة",color:"#0d6efd"}; // أزرق
-    }
-
+  return index;
 }
 
 
@@ -882,240 +2093,488 @@ allData = [
 ...attendanceData,
 
 ...violationsData.map(v=>({
+  ...v,
+  student: v.student,
+  status:"مخالفة"
+})),
 
-...v,
-
-student: v.student,   // ← تأكيد وجود الطالب
-status:"مخالفة"
-
+...positiveData.map(p=>({
+  ...p,
+  student: p.student,
+  category:"السلوك المتميز",
+  status:"السلوك المتميز"
 }))
 
 ];
 
 calculateStats();
 
-showRiskStudents();   // ← أضف هذا السطر هنا
+showRiskStudents();
 
 }
 
+function setBar(id, value, total){
+  const bar = document.getElementById(id);
+  if(!bar) return;
+//if(id === "absWeekBar") console.log("DEBUG setBar absWeekBar:", {value, total});
+  // حماية من القسمة على صفر
+  const raw = total ? (value/total)*100 : 0;
 
-function setBar(id,value,total){
-    const percent = total ? (value/total)*100 : 0;
-    const bar = document.getElementById(id);
-    bar.style.width = percent+"%";
-    bar.className="progress-fill";
-    if(percent<5) bar.classList.add("low");
-    else if(percent<15) bar.classList.add("medium");
-    else bar.classList.add("high");
+  // ✅ قصّ النسبة من 0 إلى 100
+  const percent = Math.max(0, Math.min(100, raw));
+
+  // ✅ حتى لو صغيرة جدًا
+  if(value > 0 && percent < 1) bar.style.width = "1%";
+  else bar.style.width = percent + "%";
+
+  // ✅ tooltip يوضح الحقيقة حتى لو الشريط قصّه
+  bar.title = `العدد: ${value} | المقام: ${total} | النسبة: ${raw.toFixed(2)}%`;
+
+  bar.className = "progress-fill";
+  if(percent < 5) bar.classList.add("low");
+  else if(percent < 15) bar.classList.add("medium");
+  else bar.classList.add("high");
+}
+
+function getStatsData(){
+
+  const attLive = Array.isArray(attendanceData) ? attendanceData : [];
+  const vioLive = Array.isArray(violationsData) ? violationsData : [];
+
+  const attArc = Array.isArray(window.__archiveCache?.attendance) ? window.__archiveCache.attendance : [];
+  const vioArc = Array.isArray(window.__archiveCache?.violations) ? window.__archiveCache.violations : [];
+
+  // منع التكرار
+  const seen = new Set();
+  const keyOf = (r)=>
+    r?.id || r?.docId || r?._id || r?.uniqueId ||
+    [r?.date?.seconds, r?.stage, r?.classNum, r?.student, r?.status, r?.violationType, r?.category].join("|");
+
+  const merge = (arr)=>{
+    const out=[];
+    for(const r of (arr||[])){
+      const k = keyOf(r);
+      if(seen.has(k)) continue;
+      seen.add(k);
+      out.push(r);
+    }
+    return out;
+  };
+
+  const attAll = merge([...attLive, ...attArc]).map(r=>({
+  ...r,
+  status:
+    r.status ||
+    (r.absence === true ? "غياب" : "") ||
+    (r.late === true ? "تأخر صباحي" : "")
+}));
+
+  const allMerged = [...attAll, ...vioAll];
+
+  return {
+    all: allMerged,
+    vio: vioAll
+  };
+}
+
+// ===============================
+// ✅ دمج Live + Archive للمؤشرات
+// ===============================
+function getDocKey(r){
+  return r?.id || r?.docId || r?._id || r?.uniqueId ||
+    [r?.date?.seconds, r?.stage, r?.classNum, r?.student, r?.status, r?.violationType, r?.category].join("|");
+}
+
+function mergeUnique(list){
+  const seen = new Set();
+  const out = [];
+  for(const r of (list||[])){
+    const k = getDocKey(r);
+    if(seen.has(k)) continue;
+    seen.add(k);
+    out.push(r);
+  }
+  return out;
+}
+
+function getMergedAllData(){
+  const attLive = Array.isArray(attendanceData) ? attendanceData : [];
+  const vioLive = Array.isArray(violationsData) ? violationsData : [];
+
+  const attArc = Array.isArray(window.__archiveCache?.attendance) ? window.__archiveCache.attendance : [];
+  const vioArc = Array.isArray(window.__archiveCache?.violations) ? window.__archiveCache.violations : [];
+
+  // ✅ توحيد status بشكل آمن
+  const attAll = mergeUnique([...attLive, ...attArc]).map(r=>({
+    ...r,
+    status: r.status || (r.absence ? "غياب" : r.status)
+  }));
+
+  const vioAll = mergeUnique([...vioLive, ...vioArc]).map(r=>({
+    ...r,
+    status: r.status || "مخالفة"
+  }));
+
+  return {
+    liveAll: [...attLive, ...vioLive],     // ✅ اليومي (إن رغبت)
+    mergedAll: [...attAll, ...vioAll],     // ✅ أسبوع/شهر/سنة
+    mergedViolations: vioAll
+  };
+}
+
+function getRecordDateRiyadh(r){
+  try{
+    if(!r) return null;
+
+    // Firestore Timestamp (toDate)
+    if(r.date && typeof r.date.toDate === "function"){
+      const dt = r.date.toDate();
+      return new Date(new Date(dt).toLocaleString("en-US",{ timeZone:"Asia/Riyadh" }));
+    }
+
+    // {seconds: ...}
+    if(r.date && typeof r.date.seconds === "number"){
+      return new Date(new Date(r.date.seconds*1000).toLocaleString("en-US",{ timeZone:"Asia/Riyadh" }));
+    }
+
+    // بدائل محتملة عندك في الأرشفة
+   const cand = r.createdAt || r.timestamp || r.time || r.gregorian || r.date;    if(cand && typeof cand.toDate === "function"){
+      const dt = cand.toDate();
+      return new Date(new Date(dt).toLocaleString("en-US",{ timeZone:"Asia/Riyadh" }));
+    }
+    if(cand && typeof cand.seconds === "number"){
+      return new Date(new Date(cand.seconds*1000).toLocaleString("en-US",{ timeZone:"Asia/Riyadh" }));
+    }
+
+    if(typeof cand === "string" || cand instanceof Date){
+      const dt = new Date(cand);
+      if(!isNaN(dt)) return new Date(new Date(dt).toLocaleString("en-US",{ timeZone:"Asia/Riyadh" }));
+    }
+
+    return null;
+  }catch(e){
+    return null;
+  }
 }
 
 function calculateStats(){
 
-const now = new Date();
-let referenceDate = new Date(now);
+  // ✅ نطاقات المدرسة بتوقيت الرياض (مدينتك)
+  const { startOfDay, endOfDay, startOfWeek, endOfWeek } = getSchoolRangesMadina();
 
-if(now.getHours() < 7 || (now.getHours() === 7 && now.getMinutes() < 30)){
-    referenceDate.setDate(referenceDate.getDate() - 1);
+  // ✅ الشهر والسنة (برضه بتوقيت الرياض)
+  const saNow = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Riyadh" }));
+
+  const startOfMonth = new Date(saNow.getFullYear(), saNow.getMonth(), 1, 9, 0, 0, 0);
+  const endOfMonth   = new Date(saNow.getFullYear(), saNow.getMonth() + 1, 0, 23,59,59,999);
+
+  const startOfYear  = new Date(saNow.getFullYear(), 0, 1, 9, 0, 0, 0);
+  const endOfYear    = new Date(saNow.getFullYear(), 11, 31, 23,59,59,999);
+
+  let absDay=0,absWeek=0,absMonth=0,absYear=0;
+  let lateDay=0,lateWeek=0,lateMonth=0,lateYear=0;
+  
+
+const { all: statsAllData } = window.getStatsData();
+const todayYMD = saNow.toISOString().slice(0,10);
+
+const start7 = new Date(saNow);
+start7.setDate(saNow.getDate() - 6);
+const start7YMD = start7.toISOString().slice(0,10);
+
+const monthYMD = saNow.toISOString().slice(0,7); // YYYY-MM
+const yearY = saNow.toISOString().slice(0,4);    // YYYY
+
+const dayDays   = new Set();
+const weekDays  = new Set();
+const monthDays = new Set();
+const yearDays  = new Set();
+
+  statsAllData.forEach(r=>{
+  const d = getRecordDateRiyadh(r);
+  if(!d) return;
+
+  const dYMD = d.toISOString().slice(0,10);
+
+  const isAbs  = (r.status === "غياب" || r.absence === true);
+  const isLate = (r.status === "تأخر صباحي" || r.late === true);
+
+  // ✅ أيام الدراسة (لـ Event Rate)
+  if(isAbs || isLate){
+  if(dYMD === todayYMD) dayDays.add(dYMD);
+  if(dYMD >= start7YMD && dYMD <= todayYMD) weekDays.add(dYMD);
+  if(dYMD.slice(0,7) === monthYMD) monthDays.add(dYMD);
+  if(dYMD.slice(0,4) === yearY) yearDays.add(dYMD);
 }
 
-/* اليوم الدراسي */
-const startOfDay = new Date(referenceDate);
-startOfDay.setHours(0,0,0,0);
+  // ✅ اليومي
+  if(dYMD === todayYMD){
+    if(isLate) lateDay++;
+    else if(isAbs) absDay++;
+  }
 
-const endOfDay = new Date(referenceDate);
-endOfDay.setHours(23,59,0,0);
+  // ✅ الأسبوعي (آخر 7 أيام)
+  if(dYMD >= start7YMD && dYMD <= todayYMD){
+    if(isLate) lateWeek++;
+    else if(isAbs) absWeek++;
+  }
 
-/* الأسبوع */
-const startOfWeek = new Date(startOfDay);
-startOfWeek.setDate(startOfDay.getDate() - startOfDay.getDay());
-startOfWeek.setHours(0,0,0,0);
-
-const endOfWeek = new Date(startOfWeek);
-endOfWeek.setDate(startOfWeek.getDate() + 5);
-endOfWeek.setHours(23,59,0,0);
-
-/* الشهر */
-const startOfMonth = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 1, 0,0,0,0);
-const endOfMonth = new Date(referenceDate.getFullYear(), referenceDate.getMonth()+1, 0, 23,59,0,0);
-
-/* السنة */
-const startOfYear = new Date(referenceDate.getFullYear(), 0, 1, 0,0,0,0);
-const endOfYear = new Date(referenceDate.getFullYear(), 11, 31, 23,59,0,0);
-
-let absDay=0,absWeek=0,absMonth=0,absYear=0;
-let lateDay=0,lateWeek=0,lateMonth=0,lateYear=0;
-
-allData.forEach(r=>{
-if(!r.date) return;
-const d = new Date(r.date.seconds * 1000);
-
-const lateLimit = new Date(d);
-lateLimit.setHours(8,0,0,0);
-
-/* اليوم */
-if(d >= startOfDay && d <= endOfDay){
-    if(r.status === "تأخر صباحي"){
-        lateDay++;
-    }
-    else if(r.status === "غياب"){
-        absDay++;
-    }
+  // ✅ الشهر (بالـ YMD)
+if(dYMD.slice(0,7) === monthYMD){
+  if(isLate) lateMonth++;
+  else if(isAbs) absMonth++;
 }
 
-/* الأسبوع */
-if(d >= startOfWeek && d <= endOfWeek){
-    if(r.status === "تأخر صباحي"){
-        lateWeek++;
-    }
-    else if(r.status === "غياب"){
-        absWeek++;
-    }
+  // ✅ السنة (بالـ YMD)
+if(dYMD.slice(0,4) === yearY){
+  if(isLate) lateYear++;
+  else if(isAbs) absYear++;
 }
-
-/* الشهر */
-if(d >= startOfMonth && d <= endOfMonth){
-    if(r.status === "تأخر صباحي"){
-        lateMonth++;
-    }
-    else if(r.status === "غياب"){
-        absMonth++;
-    }
-}
-
-/* السنة */
-if(d >= startOfYear && d <= endOfYear){
-    if(r.status === "تأخر صباحي"){
-        lateYear++;
-    }
-    else if(r.status === "غياب"){
-        absYear++;
-    }
-}
-
 });
+  const total = totalStudents || 1;
 
-const total = totalStudents || 1;
 
-setBar("absDayBar",absDay,total);
-setBar("absWeekBar",absWeek,total);
-setBar("absMonthBar",absMonth,total);
-setBar("absYearBar",absYear,total);
+const denomDay   = totalStudents * 1;
+const denomWeek  = totalStudents * 5;     // أسبوع دراسي
+const denomMonth = totalStudents * 20;    // شهر دراسي
+const denomYear  = totalStudents * 180;   // سنة دراسية
 
-setBar("lateDayBar",lateDay,total);
-setBar("lateWeekBar",lateWeek,total);
-setBar("lateMonthBar",lateMonth,total);
-setBar("lateYearBar",lateYear,total);
+  setBar("absDayBar",   absDay,   denomDay);
+setBar("absWeekBar",  absWeek,  denomWeek);
+setBar("absMonthBar", absMonth, denomMonth);
+setBar("absYearBar",  absYear,  denomYear);
 
-renderTable();
-drawDisciplineChart(absYear, lateYear, violationsData.length);
+setBar("lateDayBar",   lateDay,   denomDay);
+setBar("lateWeekBar",  lateWeek,  denomWeek);
+setBar("lateMonthBar", lateMonth, denomMonth);
+setBar("lateYearBar",  lateYear,  denomYear);
 
-calculateClassAbsence();
+// ===== تحديث البطاقات العلوية =====
+const topTotalStudentsEl = document.getElementById("topTotalStudents");
+const topAbsencesTodayEl = document.getElementById("topAbsencesToday");
+const topLateTodayEl = document.getElementById("topLateToday");
+const topViolationsTodayEl = document.getElementById("topViolationsToday");
 
+if(topTotalStudentsEl) topTotalStudentsEl.textContent = totalStudents || 0;
+if(topAbsencesTodayEl) topAbsencesTodayEl.textContent = absDay || 0;
+if(topLateTodayEl) topLateTodayEl.textContent = lateDay || 0;
+
+let vioToday = 0;
+if(Array.isArray(violationsData)){
+  violationsData.forEach(r=>{
+    const d = getRecordDateRiyadh(r);
+    if(!d) return;
+    const dYMD = d.toISOString().slice(0,10);
+    if(dYMD === todayYMD) vioToday++;
+  });
+}
+if(topViolationsTodayEl) topViolationsTodayEl.textContent = vioToday;
+
+
+  renderTable();
+  
+  calculateClassAbsence();
 }
 
 function calculateClassAbsence(){
 
-    const container = document.getElementById("classAbsenceChart");
-    if(!container) return;
+  const container = document.getElementById("classAbsenceChart");
+  if(!container) return;
 
-    container.innerHTML = "";
+  container.innerHTML = "";
 
-    const stages = ["رابع","خامس","سادس"];
-const classesList = [];
+  const metric = document.getElementById("classMetric")?.value || "absence";
 
-stages.forEach(stage=>{
+  const stages = ["رابع","خامس","سادس"];
+  const classesList = [];
+
+  stages.forEach(stage=>{
     for(let i=1;i<=4;i++){
-        classesList.push(stage + "-" + i);
+      classesList.push(stage + "-" + i);
     }
-});
+  });
 
+  const today = new Date().toDateString();
 
-    
+  let totalAbs = 0;
+  let totalLate = 0;
 
-    classesList.forEach(key=>{
+  classesList.forEach(key=>{
 
-        const [stage,classNum] = key.split("-");
+    const [stage,classNum] = key.split("-");
 
-        const classStudents = studentsData[key] || [];
-        const totalStudentsClass = classStudents.length || 1;
+    const classStudents = studentsData[key] || [];
+    const totalStudentsClass = classStudents.length || 1;
 
-       const today = new Date().toDateString();
-
-const classAbsences = attendanceData.filter(r => {
-
-    if(!r.date?.seconds) return false;
-
-    const recordDate = new Date(r.date.seconds * 1000);
-
-    return (
+    // ✅ غياب اليوم (من attendanceData كما عندك)
+    const classAbsences = attendanceData.filter(r => {
+      if(!r.date?.seconds) return false;
+      const recordDate = new Date(r.date.seconds * 1000);
+      return (
         r.stage === stage &&
         r.classNum === classNum &&
         recordDate.toDateString() === today
-    );
-});
-
-        const percent = Math.round((classAbsences.length / totalStudentsClass) * 100);
-
-        const item = document.createElement("div");
-        item.className = "class-bar-item";
-
-        item.innerHTML = `
-            <div class="bar-percent">${percent}%</div>
-            <div class="bar-3d" style="height:${percent * 2.5}px"></div>
-            <div class="bar-label">${stage}${classNum}</div>
-        `;
-
-        container.appendChild(item);
+      );
     });
-}
-function renderTable(){
-    const tbody=document.getElementById("dataBody");
-    tbody.innerHTML="";
-    allData.sort((a,b)=>b.date.seconds-a.date.seconds);
 
-    allData.forEach(r=>{
-        const d=new Date(r.date.seconds*1000);
-        const formatted=d.toLocaleDateString("ar-SA")+" "+d.toLocaleTimeString("ar-SA");
+    // ✅ تأخر اليوم (من allData بشرط status)
+    const classLate = allData.filter(r => {
+      if(r.status !== "تأخر صباحي") return false;
+      if(!r.date?.seconds) return false;
+      const recordDate = new Date(r.date.seconds * 1000);
+      return (
+        r.stage === stage &&
+        r.classNum === classNum &&
+        recordDate.toDateString() === today
+      );
+    });
 
-        const tr=document.createElement("tr");
+    const absCount = classAbsences.length;
+    const lateCount = classLate.length;
 
-tr.innerHTML = `
-<td>${formatted}</td>
-<td>${r.student || "-"}</td>
-<td>${r.teacher || "-"}</td>
-<td>
-${
-  r.absence 
-    ? (r.status || "غياب")
-    : (r.violationType 
-        ? "مخالفة - " + r.violationType 
-        : "مخالفة سلوكية")
-}
-</td>
-<td>${r.stage} - ${r.classNum}</td>
+    totalAbs += absCount;
+    totalLate += lateCount;
 
-<td>
-<button class="print"
-onclick='printRecord(${JSON.stringify(r)})'>
-طباعة
-</button>
-</td>
+    // ✅ حساب النسبة حسب الاختيار
+    let countToUse = absCount;
+    if(metric === "late") countToUse = lateCount;
+    if(metric === "both") countToUse = absCount + lateCount;
 
-<td>
-<button class="delete"
-onclick="deleteRecord('${r.absence?"attendance":"violations"}','${r.id}')">
-حذف
-</button>
-</td>
+    const percent = Math.round((countToUse / totalStudentsClass) * 100);
+
+    const item = document.createElement("div");
+    item.className = "class-bar-item";
+
+    const absPercent  = Math.round((absCount  / totalStudentsClass) * 100) || 0;
+const latePercent = Math.round((lateCount / totalStudentsClass) * 100) || 0;
+
+item.innerHTML = `
+  <div class="bar-top">
+    <div class="top-abs">غياب ${absPercent}%</div>
+    <div class="top-late">تأخر ${latePercent}%</div>
+  </div>
+
+  <div class="bar-stack">
+    <span class="seg seg-abs"  style="height:${absPercent}%;"></span>
+    <span class="seg seg-late" style="height:${latePercent}%;"></span>
+  </div>
+
+  <div class="bar-label">${stage}${classNum}</div>
 `;
 
-        tbody.appendChild(tr);
-    });
+    container.appendChild(item);
+  });
+
+  // ✅ تحديث العنوان حسب الاختيار
+  const totalsEl = document.getElementById("classAbsenceTotals");
+if(totalsEl){
+  totalsEl.textContent = ` (إجمالي الغياب: ${totalAbs} | إجمالي التأخر: ${totalLate})`;
+}
+}
+function renderTable(){
+  const tbody = document.getElementById("dataBody");
+  tbody.innerHTML = "";
+  allData.sort((a,b)=>b.date.seconds - a.date.seconds);
+
+  allData.forEach(r=>{
+    const d = new Date(r.date.seconds * 1000);
+    const formatted = d.toLocaleDateString("ar-SA")+" "+d.toLocaleTimeString("ar-SA");
+
+    // ✅ اسم مجموعة فايربيس
+    const col =
+  r.category === "السلوك المتميز"
+    ? "positive"
+    : (r.absence ? "attendance" : "violations");
+
+    const tr = document.createElement("tr");
+
+   tr.innerHTML = `
+  <!-- بعذر (للغياب + التأخر فقط) -->
+  <td class="chk">
+    <input type="checkbox"
+      class="excuse-check"
+      ${(col === "attendance" && (r.status === "غياب" || r.status === "تأخر صباحي" || r.absence === true)) ? "" : "disabled"}
+      ${r.excuseType === "excused" ? "checked" : ""}
+      onchange="setExcuse('${r.id}','excused',this)">
+  </td>
+
+  <!-- بدون عذر (للغياب + التأخر فقط) -->
+  <td class="chk">
+    <input type="checkbox"
+      class="excuse-check"
+      ${(col === "attendance" && (r.status === "غياب" || r.status === "تأخر صباحي" || r.absence === true)) ? "" : "disabled"}
+      ${r.excuseType === "unexcused" ? "checked" : ""}
+      onchange="setExcuse('${r.id}','unexcused',this)">
+  </td>
+
+  <!-- التاريخ -->
+  <td>${formatted}</td>
+
+  <!-- الطالب -->
+  <td>${r.student || "-"}</td>
+
+  <!-- المعلم -->
+  <td>${r.teacher || "-"}</td>
+
+  <!-- نوع السجل -->
+  <td>
+    ${
+      (col === "attendance")
+        ? (r.status || (r.absence ? "غياب" : "-"))
+        : (
+            r.category === "السلوك المتميز"
+              ? (
+                  r.positiveType
+                    ? (
+                        r.positiveType === "أخرى" && r.description
+                          ? "سلوك متميز - أخرى (" + r.description + ")"
+                          : "سلوك متميز - " + r.positiveType
+                      )
+                    : "سلوك متميز"
+                )
+              : (
+                  r.violationType
+                    ? (
+                        r.violationType === "أخرى" && r.description
+                          ? "مخالفة - أخرى (" + r.description + ")"
+                          : "مخالفة - " + r.violationType
+                      )
+                    : (r.category || "مخالفة سلوكية")
+                )
+          )
+    }
+  </td>
+
+  <!-- الفصل -->
+  <td>${r.stage} - ${r.classNum}</td>
+
+  <!-- طباعة (تحديد) — يعمل مع جميع الحالات -->
+  <td class="chk">
+    <input type="checkbox" class="row-check print-check"
+      data-col="${col}" data-id="${r.id}"
+      onchange="updateBulkCounter()">
+  </td>
+
+  <!-- حذف (تحديد) — يعمل مع جميع الحالات -->
+  <td class="chk">
+    <input type="checkbox" class="row-check delete-check"
+      data-col="${col}" data-id="${r.id}"
+      onchange="updateBulkCounter()">
+  </td>
+`;
+
+    tbody.appendChild(tr);
+  });
+
+  updateBulkCounter();
 }
 
-window.deleteRecord=async function(col,id){
-if(!confirm("هل أنت متأكد من الحذف؟")) return;
-await deleteDoc(doc(db,col,id));
+window.deleteRecord = async function(col,id){
+  try{
+    await deleteDoc(doc(db,col,id));
+  }catch(err){
+    console.error("deleteRecord error:", err);
+  }
 }
 
 window.printRecord = function(record){
@@ -1124,7 +2583,35 @@ const student = record.student || "-";
 const stage = record.stage || "-";
 const classNum = record.classNum || "-";
 const teacher = record.teacher || "-";
-const type = record.absence ? "غياب" : record.type || "-";
+const type =
+  record.absence
+    ? (record.status || "غياب")
+    : (
+        record.category === "السلوك المتميز"
+          ? (
+              record.positiveType
+                ? (
+                    record.positiveType === "أخرى" && record.description
+                      ? "سلوك متميز - أخرى (" + record.description + ")"
+                      : "سلوك متميز - " + record.positiveType
+                  )
+                : "سلوك متميز"
+            )
+          : (
+              record.violationType
+                ? (
+                    record.violationType === "أخرى" && record.description
+                      ? "مخالفة - أخرى (" + record.description + ")"
+                      : "مخالفة - " + record.violationType
+                )
+              : (record.category || "مخالفة سلوكية")
+            )
+      );
+  (record.status === "تأخر صباحي") ? "تأخر صباحي"
+  : (record.absence ? "غياب"
+  : (record.violationType
+      ? ("مخالفة - " + record.violationType + (record.violationType==="أخرى" && record.description ? " ("+record.description+")" : ""))
+      : "مخالفة سلوكية"));
 
 let gregorian = "-";
 let hijri = "-";
@@ -1156,13 +2643,20 @@ hr{margin:15px 0;}
 <h4>الإدارة العامة للتعليم بمنطقة المدينة المنورة</h4>
 <h3>مدرسة معاذ بن الحارث الابتدائية</h3>
 <hr>
-<h2>${type === "غياب" ? "إشعار غياب" : "إشعار مخالفة سلوكية"}</h2>
+<h2>${
+  record.absence ? "إشعار غياب"
+  : record.status === "تأخر صباحي" ? "إشعار تأخر صباحي"
+  : record.category === "السلوك المتميز" ? "إشعار سلوك متميز"
+  : "إشعار مخالفة سلوكية"
+}</h2>
 </div>
 
 <p><strong>اسم الطالب:</strong> ${student}</p>
 <p><strong>المرحلة:</strong> ${stage}</p>
 <p><strong>الفصل:</strong> ${classNum}</p>
 <p><strong>نوع السجل:</strong> ${type}</p>
+${record.excuseType === "excused" ? `<p><strong>الحالة:</strong> بعذر</p>` : ""}
+${record.excuseType === "unexcused" ? `<p><strong>الحالة:</strong> بدون عذر</p>` : ""}
 <p><strong>اسم المعلم:</strong> ${teacher}</p>
 
 <p><strong>التاريخ الميلادي:</strong> ${gregorian}</p>
@@ -1200,44 +2694,103 @@ window.exportExcel = async function () {
       allData.push({ ...doc.data(), type: "غياب", absence: true });
     });
 
-    console.log("عدد السجلات:", allData.length);
+    //console.log("عدد السجلات:", allData.length);
 
     if (allData.length === 0) {
       alert("لا توجد بيانات للتصدير");
       return;
     }
+    const stageOrder = {
+  "رابع": 1,
+  "خامس": 2,
+  "سادس": 3
+};
+window.stageOrder = stageOrder;
+allData.sort((a, b) => {
 
+  const stageA = stageOrder[a.stage] || 999;
+  const stageB = stageOrder[b.stage] || 999;
+
+  if (stageA !== stageB) return stageA - stageB;
+
+  const classA = parseInt(a.classNum) || 0;
+  const classB = parseInt(b.classNum) || 0;
+
+  if (classA !== classB) return classA - classB;
+
+  return 0;
+});
     // 🔹 فتح القالب
     const response = await fetch("template.xlsx");
-    const arrayBuffer = await response.arrayBuffer();
+const arrayBuffer = await response.arrayBuffer();
 
-    const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.load(arrayBuffer);
+const workbook = new ExcelJS.Workbook();
+await workbook.xlsx.load(arrayBuffer);
 
-    const worksheet = workbook.getWorksheet("Sheet1");
-    worksheet.views = [{ rightToLeft: true }];
+// 🔥 هذا التعديل المهم
+const worksheet = workbook.worksheets[0];
 
-    let startRow = 6;
+worksheet.views = [{ rightToLeft: true }];
 
-    allData.forEach((r, index) => {
+// ===== رأس التقرير =====
 
-      const row = worksheet.getRow(startRow + index);
+function safeMerge(ws, range){
+  try { ws.mergeCells(range); } catch(e) { /* غالباً مدموج مسبقاً */ }
+}
 
-      const date = r.date?.seconds
-        ? new Date(r.date.seconds * 1000).toLocaleDateString("ar-SA")
-        : "";
-        
-row.getCell("Z").value = index + 1;      // رقم
-row.getCell("Y").value = r.student || "";  // اسم الطالب
-row.getCell("U").value = r.stage || "";
-row.getCell("T").value = r.classNum || "";
-row.getCell("S").value = r.type || "";
-row.getCell("O").value = date;
+const schoolName = "معاذ بن الحارث";
+const periodText = "يومي"; // مثال: يومي / أسبوعي / شهري
+const todayText  = new Date().toLocaleDateString("ar-SA");
 
+// إذا كانت الأعمدة عندك حتى H
+const headerRange = "A1:H1";
+const schoolRange = "A2:H2";
+const periodRange = "A3:H3";
+const dateRange   = "A4:H4";
 
-      row.commit();
-    });
+safeMerge(worksheet, headerRange);
+safeMerge(worksheet, schoolRange);
+safeMerge(worksheet, periodRange);
+safeMerge(worksheet, dateRange);
 
+worksheet.getCell("A1").value = "تقرير السجل";
+worksheet.getCell("A2").value = `اسم المدرسة: ${schoolName}`;
+worksheet.getCell("A3").value = `الفترة: ${periodText}`;
+worksheet.getCell("A4").value = `التاريخ: ${todayText}`;
+
+["A1","A2","A3","A4"].forEach(addr=>{
+  worksheet.getCell(addr).alignment = { horizontal: "center", vertical: "middle" };
+});
+
+worksheet.getCell("A1").font = { bold: true, size: 16 };
+
+let startRow = 5;
+
+allData.forEach((r, index) => {
+  const row = worksheet.getRow(startRow + index);
+
+  const date = r.date?.seconds
+    ? new Date(r.date.seconds * 1000).toLocaleDateString("ar-SA")
+    : "";
+
+  row.getCell("A").value = index + 1;
+  row.getCell("B").value = r.student || "";
+  row.getCell("C").value = r.stage || "";
+  row.getCell("D").value = r.classNum || "";
+
+  const kind = r.status || (r.absence ? "غياب" : "مخالفة");
+  row.getCell("E").value = kind;
+
+  let vType = r.violationType || "";
+if (vType === "أخرى" && r.description) {
+  vType = `أخرى (${r.description})`;
+}
+row.getCell("F").value = vType;
+  row.getCell("G").value = r.teacher || "";
+  row.getCell("H").value = date;
+
+  row.commit();
+});
     const buffer = await workbook.xlsx.writeBuffer();
     saveAs(new Blob([buffer]), "تقرير_منسق.xlsx");
 
@@ -1247,84 +2800,65 @@ row.getCell("O").value = date;
   }
 
 };
-
-/* ===========================================
-   🔵 نظام الأرشفة والتصفير التلقائي
-=========================================== */
-
-function autoArchiveAndReset(){
-
-const now = new Date();
-
-/* ====== 1️⃣ أرشفة أسبوعية (الخميس 1:10 مساءً) ====== */
-if(now.getDay() === 4 && now.getHours() === 13 && now.getMinutes() === 10){
-
-    exportExcelWithName("ارشيف_اسبوع_" + formatDate(now));
-
-    deleteAllRecords();
-}
-
-/* ====== 2️⃣ أرشفة شهرية (آخر يوم بالشهر 1:10 مساءً) ====== */
-const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth()+1, 0);
-
-if(now.getDate() === lastDayOfMonth.getDate() &&
-   now.getHours() === 13 &&
-   now.getMinutes() === 10){
-
-    exportExcelWithName("ارشيف_شهر_" + (now.getMonth()+1) + "_" + now.getFullYear());
-
-    deleteAllRecords();
-}
-
-/* ====== 3️⃣ أرشفة سنوية (25 يونيو 2026 - 1:10 مساءً) ====== */
-if(now.getFullYear() === 2026 &&
-   now.getMonth() === 5 &&      // يونيو = 5
-   now.getDate() === 25 &&
-   now.getHours() === 13 &&
-   now.getMinutes() === 10){
-
-    exportExcelWithName("ارشيف_سنة_2025-2026");
-
-    deleteAllRecords();
-
-    alert("تم إغلاق السنة الدراسية وأرشفتها بنجاح");
-}
-
-}
-
-/* تشغيل الفحص كل دقيقة */
-setInterval(autoArchiveAndReset, 60000);
-
-
-/* ===========================================
-   🔵 حذف جميع السجلات من Firebase
-=========================================== */
-
-async function deleteAllRecords(){
-
-for(const r of allData){
-
-    const col = r.absence ? "attendance" : "violations";
-    await deleteDoc(doc(db, col, r.id));
-}
-
-}
+let archiveDoneToday = false;
 
 
 /* ===========================================
    🔵 تصدير Excel باسم مخصص
 =========================================== */
 
-function exportExcelWithName(fileName){
+async function exportExcelWithName(fileName){
 
-const ws = XLSX.utils.json_to_sheet(allData);
-const wb = XLSX.utils.book_new();
-XLSX.utils.book_append_sheet(wb, ws, "Archive");
+  const templatePath = "template.xlsx?v=" + Date.now();
+  //console.log("EXPORT using template:", templatePath);
 
-XLSX.writeFile(wb, fileName + ".xlsx");
+  const res = await fetch(templatePath, { cache: "no-store" });
+  if(!res.ok) throw new Error("Template fetch failed: " + res.status);
 
+  const buf = await res.arrayBuffer();
+  //console.log("Template bytes:", buf.byteLength);
+
+  const wb = XLSX.read(buf, { type: "array" });
+  const sheetName = wb.SheetNames[0];
+  const ws = wb.Sheets[sheetName];
+
+  const rows = allData.map((r, index) => {
+    const date = r.date?.seconds
+      ? new Date(r.date.seconds * 1000).toLocaleDateString("ar-SA")
+      : "";
+
+    const kind = r.status || (r.absence ? "غياب" : "مخالفة");
+
+    let vType = r.violationType || "";
+  if (vType === "أخرى" && r.description) {
+    vType = `أخرى (${r.description})`;
+  }
+
+  return [
+    index + 1,       // A رقم
+    r.student || "", // B الطالب
+    r.stage || "",   // C المرحلة
+    r.classNum || "",// D الفصل
+    kind,            // E النوع
+    vType,           // F نوع المخالفة (معدل)
+    r.teacher || "", // G المعلم
+    date             // H التاريخ
+  ];
+});
+
+  // تنظيف بيانات قديمة داخل القالب (اختياري)
+  for(let r=4; r<=500; r++){
+    for(let c=0; c<8; c++){
+      const addr = XLSX.utils.encode_cell({ r: r-1, c });
+      if(ws[addr]) ws[addr].v = "";
+    }
+  }
+
+  XLSX.utils.sheet_add_aoa(ws, rows, { origin: "A4" });
+
+  const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,"-");
+  XLSX.writeFile(wb, `${fileName}_${stamp}.xlsx`);
 }
-
 
 /* تنسيق التاريخ */
 function formatDate(d){
@@ -1352,103 +2886,7 @@ return score;
 
 }   // ← هذا قوس إغلاق الدالة فقط
 
-function drawDisciplineChart(absent, late, violations){
 
-    const ctx = document.getElementById("disciplineChart").getContext("2d");
-// ✨ إظهار النسب داخل كل جزء من الدائرة
-const showAllPercentages = {
-    id: 'showAllPercentages',
-    afterDraw(chart) {
-        const { ctx } = chart;
-        const dataset = chart.data.datasets[0].data;
-        const total = dataset.reduce((a, b) => a + b, 0);
-
-        if (total === 0) return;
-
-        const meta = chart.getDatasetMeta(0);
-
-        meta.data.forEach((arc, index) => {
-            const value = dataset[index];
-            const percentage = ((value / total) * 100).toFixed(1) + "%";
-
-            const { x, y } = arc.tooltipPosition();
-
-            ctx.save();
-            ctx.font = "bold 20px Tahoma";
-            ctx.fillStyle = "#fff";
-            ctx.shadowColor = "rgba(0,0,0,0.7)";
-            ctx.shadowBlur = 6;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(percentage, x, y);
-            ctx.restore();
-        });
-    }
-};
-
-    if (window.disciplineChart instanceof Chart) {
-    window.disciplineChart.destroy();
-}
-
-    window.disciplineChart = new Chart(ctx, {
-    type: "doughnut",
-    data: {
-        labels: ["غياب", "تأخر صباحي", "مخالفات سلوكية"],
-        datasets:[{
-data:[absent,late,violations],
-backgroundColor:[
-"#e53935",
-"#fbc02d",
-"#1e88e5"
-],
-borderWidth:0,
-borderColor:"transparent",
-spacing:0,
-hoverOffset:0,
-offset:0
-}]
-    },
-    options:{
-responsive:true,
-maintainAspectRatio:false,
-cutout:"78%",
-radius:"88%",
-
-elements:{
-arc:{
-borderWidth:0,
-borderColor:"transparent"
-}
-},
-
-layout:{
-padding:{
-bottom:15
-}
-},
-
-plugins:{
-legend:{
-display:true,
-position:"bottom",
-align:"center",
-labels:{
-color:"#000",
-font:{
-size:16,
-weight:"bold",
-family:"Tahoma"
-},
-padding:20,
-boxWidth:20,
-boxHeight:12
-}
-}
-}
-}
-});
-
-}
  // نهاية الدالة
 /* =====================================================
    أداة فحص الأسماء المكررة (لا تعدل البيانات)
@@ -1495,7 +2933,7 @@ window.checkDuplicateStudentsOnly = function() {
     return;
   }
 
-  console.log("📋 الطلاب المكررون:", duplicates);
+  //console.log("📋 الطلاب المكررون:", duplicates);
   exportDuplicatesToExcelSafe(duplicates);
 }
 
@@ -1519,83 +2957,1345 @@ function exportDuplicatesToExcelSafe(data) {
 
   XLSX.writeFile(wb, "طلاب_مكررون.xlsx");
 }
+
+
+function classifyRiskByCount(count){
+  if(count >= 7){
+    return { text:"عالي الخطورة", color:"#dc3545" };
+  }else if(count >= 4){
+    return { text:"متوسط الخطورة", color:"#ffc107" };
+  }else if(count >= 1){
+    return { text:"منخفض الخطورة", color:"#0d6efd" };
+  }else{
+    return { text:"—", color:"#6c757d" };
+  }
+}
+
 function showRiskStudents(){
 
-let behaviorIndex = buildRiskIndexes();
-let zScores = calculateZScores(behaviorIndex);
+  const index = buildRiskIndexes(); // ✅ عدد المخالفات فقط
+  const list = document.getElementById("riskStudents");
+  if(!list) return;
 
-let riskList=[];
+  const riskList = [];
 
-Object.keys(zScores).forEach(id=>{
+  Object.keys(index).forEach(id=>{
+    const count = index[id] || 0;
+    const risk = classifyRiskByCount(count);
 
-let z = zScores[id];
-let risk = classifyRisk(z);
+    // اعرض فقط من 1 فأعلى
+    if(risk.text !== "—"){
+      riskList.push({ student:id, count, ...risk });
+    }
+  });
 
-if(risk.text === "عالي الخطورة"){
+  list.innerHTML = "";
 
-riskList.push({
-student:id,
-z:z.toFixed(2),
-color:risk.color,
-text:risk.text
-});
-
+  riskList
+    .sort((a,b)=> b.count - a.count)
+    .slice(0,5)
+    .forEach(s=>{
+      const li = document.createElement("li");
+      li.innerText = `${s.student} | ${s.text} | عدد المخالفات: ${s.count}`;
+      li.style.background = s.color;
+      li.style.color = "#fff";
+      li.style.padding = "6px";
+      li.style.borderRadius = "6px";
+      li.style.marginBottom = "4px";
+      list.appendChild(li);
+    });
 }
 
+async function archiveTodayData() {
+  const today = new Date().toISOString().split("T")[0];
 
+  let movedAttendance = 0;
+  let movedViolations = 0;
 
-});
+  // تحويل أي نوع تاريخ إلى YYYY-MM-DD
+  const toYMD = (v) => {
+    if (!v) return null;
 
+    // Firestore Timestamp
+    if (typeof v.toDate === "function") {
+      return v.toDate().toISOString().split("T")[0];
+    }
 
-let list = document.getElementById("riskStudents");
-if(!list) return;
+    // {seconds: ...}
+    if (typeof v.seconds === "number") {
+      return new Date(v.seconds * 1000).toISOString().split("T")[0];
+    }
 
-list.innerHTML="";
+    // string/date
+    const d = new Date(v);
+    if (!isNaN(d.getTime())) return d.toISOString().split("T")[0];
 
-riskList
-.sort((a,b)=>b.z - a.z)
-.slice(0,5)
-.forEach(s=>{
+    return null;
+  };
 
-let risk = classifyRisk(s.z);
+  // 1) attendance -> attendance_archive
+  const attendanceSnap = await getDocs(collection(db, "attendance"));
+  for (const d of attendanceSnap.docs) {
+    const data = d.data();
 
-let li = document.createElement("li");
+    // جرّب أكثر من اسم حقل للتاريخ (حسب نظامك)
+    const recordDate =
+      toYMD(data.date) ||
+      toYMD(data.createdAt) ||
+      toYMD(data.timestamp) ||
+      toYMD(data.time);
 
-li.innerText = s.student + " | درجة الخطورة: " + s.text + " | Z = " + s.z;
-
-
-li.style.background = risk.color;
-li.style.color="#fff";
-li.style.padding="6px";
-li.style.borderRadius="6px";
-li.style.marginBottom="4px";
-
-list.appendChild(li);
-
-});
-
-}
-
-const moveAbsenceCard = setInterval(()=>{
-
-  const absenceCard = document.getElementById("absenceStdCard");
-  const behaviorCard = document.querySelector("#riskStudents")?.closest(".card");
-
-  if(absenceCard && behaviorCard){
-
-    behaviorCard.parentNode.insertBefore(absenceCard, behaviorCard);
-
-    clearInterval(moveAbsenceCard);
+    if (recordDate === today) {
+      await setDoc(doc(db, "attendance_archive", d.id), data);
+      await deleteDoc(doc(db, "attendance", d.id));
+      movedAttendance++;
+    }
   }
 
-},300);
-document.getElementById("absenceStdTarget")
-.addEventListener("change", buildAbsenceStdIndex);
+  // 2) violations -> violations_archive
+  const violationSnap = await getDocs(collection(db, "violations"));
+  for (const d of violationSnap.docs) {
+    const data = d.data();
 
-document.getElementById("absenceStdPeriod")
-.addEventListener("change", buildAbsenceStdIndex);
+    const recordDate =
+      toYMD(data.date) ||
+      toYMD(data.createdAt) ||
+      toYMD(data.timestamp) ||
+      toYMD(data.time);
+
+    if (recordDate === today) {
+      await setDoc(doc(db, "violations_archive", d.id), data);
+      await deleteDoc(doc(db, "violations", d.id));
+      movedViolations++;
+    }
+  }
+
+  alert(`✅ تمت أرشفة اليوم\nالحضور: ${movedAttendance}\nالمخالفات: ${movedViolations}\n\n(إذا كانت الأرقام 0 فهذا يعني أن شرط تاريخ اليوم لا يطابق سجلاتك)`);
+
+  // ✅ تحديث كاش الأرشيف فوراً بعد الأرشفة
+if(window.__archiveCache){
+  window.__archiveCache.loaded = false;
+  window.__archiveCache.loading = null;
+}
+await window.loadArchiveOnce();
+
+// ✅ أعد حساب المؤشرات مباشرة
+combineData();
+calculateStats();
+buildAbsenceStdIndex?.();
+
+}
+
+window.archiveTodayData = archiveTodayData;
+
+(function scheduleDailyAndWeeklyArchive(){
+  const DAILY_HOUR = 14, DAILY_MIN = 5;      // 14:05
+  const WEEKLY_HOUR = 14, WEEKLY_MIN = 10;   // 14:10
+  const SCHOOL_DAYS = [0,1,2,3,4];           // الأحد(0) إلى الخميس(4)
+
+  setInterval(async () => {
+    const now = new Date();
+    const day = now.getDay();
+
+    // فقط أيام الدوام
+    if (!SCHOOL_DAYS.includes(day)) return;
+
+    const ymd = now.toISOString().split("T")[0];
+
+    // ✅ 1) يومي
+    const dailyKey = "daily_archive_done_" + ymd;
+    if (now.getHours() === DAILY_HOUR && now.getMinutes() === DAILY_MIN) {
+      if (localStorage.getItem(dailyKey) !== "1") {
+        localStorage.setItem(dailyKey, "1");
+
+        // 1) تصدير يومي
+        await exportExcelWithName("ارشيف_يومي_" + ymd);
+
+        // 2) أرشفة اليوم (نقل + حذف من الأساسية)
+        await window.archiveTodayData();
+      }
+    }
+
+    // ✅ 2) أسبوعي (الخميس فقط)
+    const isThursday = (day === 4);
+    const weeklyKey = "weekly_archive_done_" + ymd;
+
+    if (isThursday && now.getHours() === WEEKLY_HOUR && now.getMinutes() === WEEKLY_MIN) {
+      if (localStorage.getItem(weeklyKey) !== "1") {
+        localStorage.setItem(weeklyKey, "1");
+
+        // تصدير أسبوعي باسم مستقل
+        await exportExcelWithName("ارشيف_اسبوع_" + ymd);
+
+        alert("✅ تم تصدير الأرشيف الأسبوعي");
+      }
+    }
+
+  }, 60000);
+})();
+
+window.updateBulkCounter = function(){
+  const p = document.querySelectorAll(".print-check:checked").length;
+  const d = document.querySelectorAll(".delete-check:checked").length;
+  const el = document.getElementById("bulkCounter");
+  if(el) el.textContent = `طباعة: ${p} | حذف: ${d}`;
+};
+
+window.printSelected = function(){
+  const selected = Array.from(document.querySelectorAll(".print-check:checked"));
+  if(selected.length === 0) return alert("حدد سجلات للطباعة أولاً");
+
+  selected.forEach(chk=>{
+    const col = chk.dataset.col;
+    const id = chk.dataset.id;
+
+    const rec = allData.find(r => {
+      const rowCol =
+        r.category === "السلوك المتميز"
+          ? "positive"
+          : (r.absence ? "attendance" : "violations");
+
+      return r.id === id && rowCol === col;
+    });
+
+    if(rec) printRecord(rec);
+  });
+};
+
+window.deleteSelected = async function(){
+  const selected = Array.from(document.querySelectorAll(".delete-check:checked"));
+  if(selected.length === 0) return alert("حدد سجلات للحذف أولاً");
+
+  if(!confirm(`تأكيد حذف (${selected.length}) سجل؟`)) return;
+
+  // حذف واحد واحد باستخدام deleteRecord الموجودة عندك
+  for(const chk of selected){
+    await window.deleteRecord(chk.dataset.col, chk.dataset.id);
+  }
+
+  // تحديث العداد بعد الحذف
+  updateBulkCounter();
+};
+
+
+window.buildAbsenceStdIndex = buildAbsenceStdIndex;
+
+// ✅ اربط تغيير القوائم بإعادة بناء المؤشر
+(function bindAbsenceStdControls(){
+  const t = document.getElementById("absenceStdTarget");
+  const p = document.getElementById("absenceStdPeriod");
+
+  if(t) t.addEventListener("change", () => window.buildAbsenceStdIndex());
+  if(p) p.addEventListener("change", () => window.buildAbsenceStdIndex());
+
+  // ✅ اختبار سريع: أول تشغيل
+  // window.buildAbsenceStdIndex();
+
+})();
+
+/* ===========================
+   🏆 مؤشر السلوك المتميز (معزول)
+   يعتمد على allData فقط
+=========================== */
+
+let posTarget = "students"; // students | classes
+let posPeriod = "day";      // day | week | month | year
+
+function getPosStartDate(period){
+  const now = new Date();
+
+  if(period === "day"){
+    const s = new Date(now); s.setHours(0,0,0,0); return s;
+  }
+  if(period === "week"){
+    const s = new Date(now);
+    s.setDate(now.getDate() - now.getDay());
+    s.setHours(0,0,0,0);
+    return s;
+  }
+  if(period === "month"){
+    return new Date(now.getFullYear(), now.getMonth(), 1, 0,0,0,0);
+  }
+  // year
+  return new Date(now.getFullYear(), 0, 1, 0,0,0,0);
+}
+
+function isPositiveRecord(r){
+  // ✅ حسب منطقك في الجدول: category === "السلوك المتميز"
+  return r && r.category === "السلوك المتميز";
+}
+
+function buildPositiveIndex(){
+  if(!Array.isArray(positiveData) || positiveData.length === 0){
+    return { index:{}, total:0 };
+  }
+
+  const start = getPosStartDate(posPeriod);
+  const index = {};
+  let total = 0;
+
+  positiveData.forEach(r=>{
+    if(!r.date?.seconds) return;
+
+    const d = new Date(r.date.seconds * 1000);
+    if(d < start) return;
+
+    let key = "";
+    if(posTarget === "students"){
+      key = `${r.stage}_${r.classNum}_${r.student || ""}`.trim();
+    }else{
+      key = `${r.stage}_${r.classNum}`.trim();
+    }
+
+    if(!key || key.includes("undefined")) return;
+
+    index[key] = (index[key] || 0) + 1;
+    total++;
+  });
+
+  return { index, total };
+}
+
+function formatKey(key){
+  if(posTarget === "students"){
+    const parts = key.split("_");
+    const stage = parts[0] || "";
+    const cls = parts[1] || "";
+    const name = parts.slice(2).join("_") || "";
+    return `${stage}-${cls} | ${name}`;
+  }else{
+    const parts = key.split("_");
+    return `${parts[0] || ""}-${parts[1] || ""}`;
+  }
+}
+
+function renderPosCard(listElId, subElId, items, placeLabel){
+  const listEl = document.getElementById(listElId);
+  const subEl  = document.getElementById(subElId);
+  if(!listEl || !subEl) return;
+
+  if(items.length === 0){
+    subEl.textContent = "لا توجد بيانات";
+    listEl.innerHTML = `<div style="opacity:.7">—</div>`;
+    return;
+  }
+
+  const top = items[0];
+  subEl.textContent = `${placeLabel}: ${formatKey(top.key)} — (${top.count})`;
+
+  // اعرض أفضل 5
+  const top5 = items.slice(0,5);
+  listEl.innerHTML = top5.map(x=>`
+    <div class="pos-item">
+      <b>${formatKey(x.key)}</b>
+      <span class="pos-count">${x.count}</span>
+    </div>
+  `).join("");
+}
+
+function updatePosButtonsUI(){
+  const map = [
+    ["posTargetStudents", posTarget==="students"],
+    ["posTargetClasses",  posTarget==="classes"],
+    ["posPeriodDay",   posPeriod==="day"],
+    ["posPeriodWeek",  posPeriod==="week"],
+    ["posPeriodMonth", posPeriod==="month"],
+    ["posPeriodYear",  posPeriod==="year"],
+  ];
+
+  map.forEach(([id, active])=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.classList.toggle("active", !!active);
+  });
+}
+
+function renderPositiveAwards(){
+  updatePosButtonsUI();
+const box = document.querySelector(".pos-box");
+  if(box){
+    box.classList.toggle("pos-hide-student", posTarget==="classes");
+  }
+  const totalEl = document.getElementById("posTotalText");
+  const { index, total } = buildPositiveIndex();
+
+  const arr = Object.keys(index)
+    .map(k=>({ key:k, count:index[k] }))
+    .sort((a,b)=>b.count - a.count);
+
+  if(totalEl){
+    const targetText = (posTarget==="students") ? "الطلاب" : "الفصول";
+    const periodText =
+      posPeriod==="day" ? "اليوم" :
+      posPeriod==="week" ? "هذا الأسبوع" :
+      posPeriod==="month" ? "هذا الشهر" : "هذه السنة";
+
+    totalEl.textContent = `إجمالي السلوك المتميز (${targetText}) — ${periodText}: ${total}`;
+  }
+
+  // وزّعها على 3 مراكز (أو اعرض نفس القائمة بأول/ثاني/ثالث كقمة)
+  const gold   = arr.slice(0,5);
+const silver = arr.slice(5,10);
+const bronze = arr.slice(10,15);
+  renderPosCard("posGoldList",   "posGoldSub",   gold,   "الأفضل");
+  renderPosCard("posSilverList", "posSilverSub", silver, "التالي");
+  renderPosCard("posBronzeList", "posBronzeSub", bronze, "التالي");
+}
+
+// ✅ واجهات التحكم (أسماء معزولة)
+window.switchPosTarget = function(t){
+  posTarget = (t === "classes") ? "classes" : "students";
+  renderPositiveAwards();
+};
+
+window.switchPosPeriod = function(p){
+  const allowed = ["day","week","month","year"];
+  posPeriod = allowed.includes(p) ? p : "day";
+  renderPositiveAwards();
+};
+
+// ✅ تشغيل أولي + إعادة رسم عند تحديث البيانات
+// (بدون لمس دوالك الأساسية: فقط "استدعاء" بعد تحميل البيانات)
+(function initPositiveAwards(){
+  // تشغيل أولي بعد ثواني بسيطة لضمان جاهزية allData والـ DOM
+  setTimeout(()=>{ try{ renderPositiveAwards(); }catch(e){} }, 300);
+
+  // كل ما تتحدث البيانات غالباً يتحدث allData عبر combineData() → calculateStats()
+  // فنستدعيه بشكل آمن بعد أي renderTable (لأن renderTable تُستدعى ضمن calculateStats)
+  const _renderTable = window.renderTable;
+  // إذا renderTable دالة داخل module وليست window، تجاهل هذا (ممنوع تعارض)
+  // لذلك بنعتمد على الاستدعاءات الموجودة عندك بعد onSnapshot:
+})();
+window.setExcuse = async function(id, type, el){
+  try{
+    if(el.disabled){ el.checked = false; return; }
+
+    const row = el.closest("tr");
+    row.querySelectorAll(".excuse-check").forEach(c=>{
+      if(c !== el) c.checked = false;
+    });
+
+    if(!el.checked){ el.checked = true; return; }
+
+    await setDoc(doc(db, "attendance", id), { excuseType: type }, { merge: true });
+  }catch(err){
+    console.error("setExcuse error:", err);
+  }
+};
+function getSelectedIds(selector){
+  return Array.from(document.querySelectorAll(selector + ":checked"))
+    .map(el => ({ col: el.dataset.col, id: el.dataset.id }));
+}
+
+window.bulkDeleteSelected = async function(){
+  try{
+    const selected = getSelectedIds(".delete-check");
+    if(selected.length === 0) return;
+
+    for(const s of selected){
+      await deleteDoc(doc(db, s.col, s.id));
+    }
+
+    // اختياري: فك التحديد بعد الحذف
+    document.querySelectorAll(".delete-check:checked").forEach(cb => cb.checked = false);
+    updateBulkCounter?.();
+
+  }catch(err){
+    console.error("bulkDeleteSelected error:", err);
+  }
+};
+
+let interventionPeriod = "day";
+
+window.setInterventionPeriod = function(period){
+  const allowed = ["day","week","month"];
+  interventionPeriod = allowed.includes(period) ? period : "day";
+};
+
+function updateInterventionButtonsUI(){
+  const map = [
+    ["itvDayBtn", interventionPeriod === "day"],
+    ["itvWeekBtn", interventionPeriod === "week"],
+    ["itvMonthBtn", interventionPeriod === "month"]
+  ];
+
+  map.forEach(([id, active])=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.classList.toggle("active", !!active);
+  });
+}
+
+window.setInterventionPeriod = function(period){
+  const allowed = ["day","week","month"];
+  interventionPeriod = allowed.includes(period) ? period : "day";
+  updateInterventionButtonsUI();
+  renderInterventionPanel();
+};
+
+function getInterventionStartDate(period){
+  const now = new Date();
+
+  if(period === "day"){
+    const s = new Date(now);
+    s.setHours(0,0,0,0);
+    return s;
+  }
+
+  if(period === "week"){
+    const s = new Date(now);
+    s.setDate(now.getDate() - now.getDay());
+    s.setHours(0,0,0,0);
+    return s;
+  }
+
+  return new Date(now.getFullYear(), now.getMonth(), 1, 0,0,0,0);
+}
+
+function buildInterventionIndex(){
+  const start = getInterventionStartDate(interventionPeriod);
+  const { all, vio } = window.getStatsData();
+
+  const index = {};
+
+  const ensureStudent = (r) => {
+    const key = `${r.stage || ""}_${r.classNum || ""}_${r.student || ""}`.trim();
+    if(!key || key.includes("undefined")) return null;
+
+    if(!index[key]){
+      index[key] = {
+        key,
+        student: r.student || "",
+        stage: r.stage || "",
+        classNum: r.classNum || "",
+        absence: 0,
+        late: 0,
+        violations: 0,
+        score: 0
+      };
+    }
+
+    return index[key];
+  };
+
+  all.forEach(r=>{
+    const d = getRecordDateRiyadh(r);
+    if(!d || d < start) return;
+    if(!r.student) return;
+
+    const row = ensureStudent(r);
+    if(!row) return;
+
+    if(r.status === "غياب" || r.absence === true){
+      row.absence += 1;
+    }else if(r.status === "تأخر صباحي" || r.late === true){
+      row.late += 1;
+    }
+  });
+
+  (vio || []).forEach(r=>{
+    const d = getRecordDateRiyadh(r);
+    if(!d || d < start) return;
+    if(!r.student) return;
+
+    const row = ensureStudent(r);
+    if(!row) return;
+
+    row.violations += 1;
+  });
+
+  Object.values(index).forEach(r=>{
+    r.score = (r.absence * 3) + (r.late * 1) + (r.violations * 4);
+  });
+
+  return index;
+}
+
+function classifyInterventionStudent(row){
+  const score = row.score || 0;
+
+  if(interventionPeriod === "day"){
+    if(score >= 5) return "urgent";
+    if(score >= 2) return "follow";
+    return "stable";
+  }
+
+  if(interventionPeriod === "week"){
+    if(score >= 7) return "urgent";
+    if(score >= 3) return "follow";
+    return "stable";
+  }
+
+  // month
+  if(score >= 10) return "urgent";
+  if(score >= 5) return "follow";
+  return "stable";
+}
+
+function renderInterventionPanel(){
+  updateInterventionButtonsUI();
+
+  const index = buildInterventionIndex();
+  const rows = Object.values(index);
+
+  const stable = [];
+  const follow = [];
+  const urgent = [];
+
+  rows.forEach(r=>{
+    const cls = classifyInterventionStudent(r);
+    if(cls === "stable") stable.push(r);
+    else if(cls === "follow") follow.push(r);
+    else urgent.push(r);
+  });
+
+  stable.sort((a,b)=> a.score - b.score || a.student.localeCompare(b.student,"ar"));
+  follow.sort((a,b)=> b.score - a.score || a.student.localeCompare(b.student,"ar"));
+  urgent.sort((a,b)=> b.score - a.score || a.student.localeCompare(b.student,"ar"));
+
+  const stableCountEl = document.getElementById("stableCount");
+  const followCountEl = document.getElementById("followCount");
+  const urgentCountEl = document.getElementById("urgentCount");
+
+  const stableListEl = document.getElementById("stableList");
+  const followListEl = document.getElementById("followList");
+  const urgentListEl = document.getElementById("urgentList");
+
+  if(stableCountEl) stableCountEl.textContent = stable.length;
+  if(followCountEl) followCountEl.textContent = follow.length;
+  if(urgentCountEl) urgentCountEl.textContent = urgent.length;
+
+  const renderNames = (el, arr) => {
+    if(!el) return;
+    if(!arr.length){
+      el.innerHTML = `<div class="itv-name">—</div>`;
+      return;
+    }
+
+    el.innerHTML = arr.map(r=>`
+  <div class="itv-name">${r.student} — ${r.stage}-${r.classNum}</div>
+`).join("");;
+  };
+
+  renderNames(stableListEl, stable);
+  renderNames(followListEl, follow);
+  renderNames(urgentListEl, urgent);
+}
+
+setTimeout(()=>{ try{ renderInterventionPanel(); }catch(e){} }, 400);
+
 
 </script>
 
+
+
+  <script type="module">
+    import { getApps, getApp, initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection, getDocs,
+      doc, setDoc, deleteDoc
+    } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+    import { studentsData } from "./students.js";
+
+    function getAppSafe(){
+      // يحاول استخدام تطبيقك الحالي إن كان مُهيأ
+      if(getApps().length) return getApp();
+      // يدعم window.firebaseConfig إن كان موجودًا
+      if(window.firebaseConfig) return initializeApp(window.firebaseConfig);
+      throw new Error("No Firebase App found and no window.firebaseConfig");
+    }
+
+    function getDbSafe(){
+      return getFirestore(getAppSafe());
+    }
+
+    // ========= Expose Classes Fetch for UI =========
+    window.__MUATH_FETCH_CLASSES__ = async function(){
+      const db = getDbSafe();
+      const snap = await getDocs(collection(db, "classes"));
+      const rows = [];
+      snap.forEach(d=>{
+        const x = d.data() || {};
+        if(x.active === false) return;
+        const stage = (x.stage ?? "").toString().trim();
+        const classNum = (x.classNum ?? "").toString().trim();
+        if(!stage || !classNum) return;
+        rows.push({ stage, classNum });
+      });
+      return rows;
+    };
+
+    window.__MUATH_GROUP_BY_STAGE__ = function(rows){
+      const m = new Map();
+      for(const r of (rows||[])){
+        const st = String(r.stage||"").trim();
+        const cn = String(r.classNum||"").trim();
+        if(!st || !cn) continue;
+        if(!m.has(st)) m.set(st, []);
+        m.get(st).push(cn);
+      }
+      for(const [st, arr] of m){
+        const uniq = Array.from(new Set(arr));
+        uniq.sort((a,b)=>{
+          const na = Number(a), nb = Number(b);
+          if(!Number.isNaN(na) && !Number.isNaN(nb)) return na - nb;
+          return String(a).localeCompare(String(b),"ar");
+        });
+        m.set(st, uniq);
+      }
+      return m;
+    };
+
+  function normalizeArabicName(s = ""){
+  return (s || "")
+    .toString()
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/[\u064B-\u0652]/g, "")
+    .replace(/\u0640/g, "")
+    .replace(/\u0670/g, "")
+    .replace(/[إأآا]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه");
+}
+
+    // ========= Students CRUD (Expose to UI) =========
+    window.__MUATH_LOAD_STUDENTS__ = async function(stage, cls){
+      const db = getDbSafe();
+      const ck = `${stage}-${cls}`;
+
+      const snap = await getDocs(collection(db, "students"));
+      const out = [];
+      snap.forEach(d=>{
+        const x = d.data() || {};
+        if(x.active === false) return;
+        if(String(x.classKey || "") !== ck) return;
+        const name = String(x.name || "").trim();
+        if(!name) return;
+        out.push({ id: d.id, name });
+      });
+
+      out.sort((a,b)=> a.name.localeCompare(b.name,"ar"));
+      return out;
+    };
+
+    window.__MUATH_ADD_STUDENT__ = async function(stage, cls, name){
+      const db = getDbSafe();
+      const ck = `${stage}-${cls}`;
+      const newId = `${Date.now()}_${Math.random().toString(16).slice(2)}`;
+
+      await setDoc(doc(db, "students", newId), {
+        name: String(name || "").trim(),
+        stage: String(stage || "").trim(),
+        classNum: String(cls || "").trim(),
+        classKey: ck,
+        active: true,
+        updatedAt: new Date()
+      }, { merge:true });
+
+      return true;
+    };
+
+    window.__MUATH_DELETE_STUDENT__ = async function(studentId){
+      const db = getDbSafe();
+      await deleteDoc(doc(db, "students", studentId));
+      return true;
+    };
+
+    
+window.__MUATH_MIGRATE_FROM_JS__ = async function(){
+  const db = getDbSafe();
+
+  const normalize = (s="") => (s||"").toString().trim().replace(/\s+/g," ");
+
+  let total = 0;
+  let written = 0;
+
+  for (const [key, arr] of Object.entries(studentsData || {})) {
+    // key مثل: "رابع-1"
+    const parts = String(key).split("-");
+    const stage = (parts[0] || "").trim();
+    const classNum = (parts[1] || "").trim();
+    if(!stage || !classNum) continue;
+
+    const ck = `${stage}-${classNum}`;
+
+    for(const rawName of (arr || [])){
+      const name = normalize(rawName);
+      if(!name) continue;
+
+      total++;
+
+      // ✅ ID ثابت يمنع التكرار داخل نفس الفصل
+      const id = `${ck}__${(window.normalizeArabicName ? window.normalizeArabicName(name) : name).replace(/\s+/g,"_")}`;
+
+      await setDoc(doc(db, "students", id), {
+        name,
+        stage,
+        classNum,
+        classKey: ck,
+        active: true,
+        updatedAt: new Date()
+      }, { merge: true });
+
+      written++;
+    }
+  }
+
+  return { total, written };
+};
+    // ========= Classes CRUD (Optional) =========
+    window.__MUATH_ADD_CLASS__ = async function(stage, cls){
+      const db = getDbSafe();
+      const id = `${stage}-${cls}`;
+      await setDoc(doc(db,"classes",id), {
+        stage: String(stage||"").trim(),
+        classNum: String(cls||"").trim(),
+        active: true,
+        updatedAt: new Date()
+      }, { merge:true });
+    };
+
+    window.__MUATH_DELETE_CLASS__ = async function(id){
+      const db = getDbSafe();
+      await deleteDoc(doc(db,"classes",id));
+    };
+  </script>
+
+
+  <!-- سكربت UI (غير module) -->
+  <script>
+    (function(){
+      "use strict";
+
+      // زر ثابت (يسار مثل ما عندك)
+      function injectSystemUI(){
+        if(document.getElementById("muath-system-btn")) return;
+
+        const btn = document.createElement("button");
+        btn.id = "muath-system-btn";
+        btn.type = "button";
+        btn.textContent = "إدارة النظام";
+
+        const panel = document.createElement("div");
+        panel.id = "muath-system-panel";
+        panel.innerHTML = `
+  <div class="mc-card" role="dialog" aria-modal="true">
+    <div class="mc-head">
+      <div class="mc-title">إدارة النظام</div>
+      <button type="button" class="mc-close">إغلاق</button>
+    </div>
+
+    <div class="mc-body">
+      <div class="mc-tabs">
+        <button type="button" class="mc-tab active" data-tab="classes">الفصول</button>
+        <button type="button" class="mc-tab" data-tab="students">الطلاب</button>
+      </div>
+
+      <!-- الفصول -->
+      <div class="mc-tabview" id="mcTabClasses">
+        <div class="mc-note">إدارة الفصول (classes)</div>
+
+        <div class="mc-row">
+          <label>المرحلة</label>
+          <input id="mcStage" class="mc-input" placeholder="مثال: رابع" />
+
+          <label>الفصل</label>
+          <input id="mcClass" class="mc-input" placeholder="مثال: 1" style="width:120px" />
+
+          <button type="button" class="mc-btn" id="mcAdd">إضافة فصل</button>
+        </div>
+
+        <div class="mc-list-title">الفصول</div>
+        <div class="mc-list" id="mcList"></div>
+      </div>
+
+      <!-- الطلاب -->
+      <div class="mc-tabview" id="mcTabStudents" style="display:none">
+        <div class="mc-note">إدارة الطلاب (students)</div>
+
+        <div class="mc-row">
+          <label>المرحلة</label>
+          <select id="msStage" class="mc-input"></select>
+
+          <label>الفصل</label>
+          <select id="msClass" class="mc-input" style="width:120px"></select>
+
+          <button type="button" class="mc-btn" id="msLoad">تحميل الطلاب</button>
+        </div>
+
+        <div class="mc-list-title">طلاب الفصل</div>
+        <div class="mc-list" id="msList"></div>
+
+        <div class="mc-list-title" style="margin-top:12px">إضافة طالب جديد</div>
+        <div class="mc-row">
+          <label>اسم الطالب</label>
+          <input id="msName" class="mc-input" placeholder="اكتب اسم الطالب..." style="min-width:240px"/>
+          <button type="button" class="mc-btn" id="msAdd">إضافة</button>
+        </div>
+
+        <!-- Footer داخل تبويب الطلاب فقط -->
+        <div class="mc-footer">
+          <div class="mc-list-title" style="margin-top:14px;text-align:center">استيراد الطلاب من Excel</div>
+
+          <div class="mc-row" style="justify-content:center; gap:10px">
+            <input type="file" id="msExcel" class="mc-input" accept=".xlsx,.xls" style="min-width:260px"/>
+            <button type="button" class="mc-btn" id="msImport">استيراد</button>
+          </div>
+
+          <div style="font-size:12px;color:#64748b;text-align:center;margin-top:6px">
+            الملف يجب أن يحتوي عمودًا واحدًا للأسماء فقط
+          </div>
+
+          <div class="mc-list-title" style="margin-top:14px;text-align:center">
+            ترحيل الطلاب من students.js إلى Firebase (مرة واحدة)
+          </div>
+
+          <div class="mc-row" style="justify-content:center; gap:10px">
+            <button type="button" class="mc-btn" id="msMigrate">ترحيل الآن</button>
+          </div>
+
+          <div style="text-align:center;font-size:12px;color:#64748b;margin-top:6px">
+            بعد نجاح الترحيل يمكنك الاعتماد على Excel/Firebase وإلغاء students.js لاحقًا.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+`;
+
+        const style = document.createElement("style");
+        style.textContent = `
+          #muath-system-btn{
+            position:fixed; left:16px; bottom:16px;
+            z-index:999999; border:0; border-radius:12px;
+            padding:10px 14px; cursor:pointer;
+            background:#0d9488; color:#fff; font-family:Tahoma;
+            box-shadow:0 10px 25px rgba(0,0,0,.18);
+          }
+          #muath-system-panel{
+            position:fixed; inset:0; display:none;
+            z-index:999998; background:rgba(0,0,0,.35);
+            font-family:Tahoma;
+          }
+          #muath-system-panel .mc-card{
+            max-width:860px; margin:40px auto; background:#fff;
+            border-radius:18px; overflow:hidden;
+            box-shadow:0 18px 60px rgba(0,0,0,.25);
+          }
+          #muath-system-panel .mc-head{
+            display:flex; align-items:center; justify-content:space-between;
+            padding:14px 16px; color:#fff;
+            background:linear-gradient(135deg,#1565c0,#1976d2);
+          }
+          #muath-system-panel .mc-title{ font-weight:800; font-size:18px; }
+          #muath-system-panel .mc-close{
+            border:0; border-radius:10px; padding:8px 10px;
+            background:rgba(255,255,255,.18); color:#fff; cursor:pointer;
+          }
+          #muath-system-panel .mc-body{ padding:14px 16px; }
+          #muath-system-panel .mc-note{
+            background:#f3f6ff; border:1px solid #e5e7eb;
+            padding:10px 12px; border-radius:12px;
+            color:#334155; font-size:13px; margin-bottom:12px;
+          }
+          #muath-system-panel .mc-tabs{
+            display:flex; gap:8px; margin-bottom:12px;
+          }
+          #muath-system-panel .mc-tab{
+            border:1px solid #e5e7eb; background:#fff; cursor:pointer;
+            border-radius:999px; padding:8px 14px; font-family:Tahoma;
+          }
+          #muath-system-panel .mc-tab.active{
+            background:#1d4ed8; color:#fff; border-color:#1d4ed8;
+          }
+          #muath-system-panel .mc-row{
+            display:flex; flex-wrap:wrap; gap:8px;
+            align-items:center; margin-bottom:10px;
+          }
+          #muath-system-panel label{ font-size:13px; color:#334155; }
+          #muath-system-panel .mc-input{
+            padding:10px 10px; border:1px solid #cbd5e1;
+            border-radius:12px; outline:none; font-family:Tahoma;
+            background:#fff;
+          }
+          #muath-system-panel .mc-btn{
+            padding:10px 14px; border:0; border-radius:12px;
+            cursor:pointer; background:#0f766e; color:#fff;
+            font-family:Tahoma;
+          }
+          #muath-system-panel .mc-list-title{
+            font-weight:800; color:#111827; margin:10px 0 8px;
+          }
+          #muath-system-panel .mc-list{
+          border:1px solid #e5e7eb;
+          border-radius:14px;
+          max-height:320px;   /* ارتفاع القائمة */
+          overflow-y:auto;    /* ظهور شريط التمرير */
+           }
+          #muath-system-panel .mc-item{
+            display:flex; justify-content:space-between; align-items:center;
+            padding:10px 12px; border-bottom:1px solid #eef2f7;
+            background:#fff; font-size:13px;
+          }
+          #muath-system-panel .mc-item:last-child{ border-bottom:0; }
+          #muath-system-panel .mc-del{
+            border:0; border-radius:10px; padding:7px 10px;
+            cursor:pointer; background:#b91c1c; color:#fff;
+          }
+        `;
+
+        document.body.appendChild(style);
+        document.body.appendChild(btn);
+        document.body.appendChild(panel);
+
+        // Open/Close
+        btn.addEventListener("click", ()=> panel.style.display = "block");
+        panel.addEventListener("click", (e)=>{ if(e.target === panel) panel.style.display = "none"; });
+        panel.querySelector(".mc-close").addEventListener("click", ()=> panel.style.display = "none");
+
+        // Tabs
+        const tabBtns     = panel.querySelectorAll(".mc-tab");
+        const tabClasses  = panel.querySelector("#mcTabClasses");
+        const tabStudents = panel.querySelector("#mcTabStudents");
+
+        tabBtns.forEach(b=>{
+          b.addEventListener("click", async ()=>{
+            tabBtns.forEach(x=>x.classList.remove("active"));
+            b.classList.add("active");
+
+            const t = b.getAttribute("data-tab");
+            tabClasses.style.display  = (t==="classes")  ? "block" : "none";
+            tabStudents.style.display = (t==="students") ? "block" : "none";
+
+            if(t === "students"){
+              await fillStudentsStageClass();
+            }
+            if(t === "classes"){
+              await loadClassesList();
+            }
+          });
+        });
+
+
+        // ----- Classes UI -----
+        async function loadClassesList(){
+          const list = panel.querySelector("#mcList");
+          if(!list) return;
+          list.innerHTML = "جارٍ التحميل...";
+
+          const rows = await window.__MUATH_FETCH_CLASSES__();
+          const map = window.__MUATH_GROUP_BY_STAGE__(rows);
+
+          list.innerHTML = "";
+          const stages = Array.from(map.keys());
+          if(!stages.length){
+            list.innerHTML = `<div style="padding:10px;color:#64748b;">لا توجد فصول</div>`;
+            return;
+          }
+
+          stages.forEach(st=>{
+            (map.get(st)||[]).forEach(cn=>{
+              const id = `${st}-${cn}`;
+              const row = document.createElement("div");
+              row.className = "mc-item";
+              row.innerHTML = `<span>${id}</span><button type="button" class="mc-del">حذف</button>`;
+              row.querySelector(".mc-del").onclick = async ()=>{
+                if(!confirm(`حذف الفصل: ${id} ؟`)) return;
+                await window.__MUATH_DELETE_CLASS__(id);
+                await loadClassesList();
+              };
+              list.appendChild(row);
+            });
+          });
+        }
+
+        panel.querySelector("#mcAdd").onclick = async ()=>{
+          const stage = panel.querySelector("#mcStage").value.trim();
+          const cls   = panel.querySelector("#mcClass").value.trim();
+          if(!stage || !cls) return alert("اكتب المرحلة والفصل");
+          await window.__MUATH_ADD_CLASS__(stage, cls);
+          panel.querySelector("#mcClass").value = "";
+          await loadClassesList();
+        };
+
+
+        // ----- Students UI -----
+        async function fillStudentsStageClass(){
+          const stageSel = panel.querySelector("#msStage");
+          const classSel = panel.querySelector("#msClass");
+          if(!stageSel || !classSel) return;
+
+          stageSel.innerHTML = `<option value="">جارٍ تحميل المراحل...</option>`;
+          classSel.innerHTML = `<option value="">—</option>`;
+
+          const rows = await window.__MUATH_FETCH_CLASSES__();
+          const classesMap = window.__MUATH_GROUP_BY_STAGE__(rows);
+
+          const stages = Array.from(classesMap.keys());
+          stageSel.innerHTML =
+            `<option value="">اختر المرحلة</option>` +
+            stages.map(s=>`<option value="${s}">${s}</option>`).join("");
+
+          const fillClasses = ()=>{
+            const st = stageSel.value;
+            const classes = classesMap.get(st) || [];
+            classSel.innerHTML =
+              `<option value="">اختر الفصل</option>` +
+              classes.map(c=>`<option value="${c}">${c}</option>`).join("");
+          };
+
+          stageSel.onchange = fillClasses;
+          fillClasses();
+        }
+
+        async function renderStudents(){
+          const stage = panel.querySelector("#msStage").value;
+          const cls   = panel.querySelector("#msClass").value;
+          const list  = panel.querySelector("#msList");
+
+          if(!stage || !cls) return alert("اختر المرحلة والفصل");
+          list.innerHTML = "جارٍ التحميل...";
+
+          const students = await window.__MUATH_LOAD_STUDENTS__(stage, cls);
+          if(!students.length){
+            list.innerHTML = `<div style="padding:10px;color:#64748b;">لا يوجد طلاب</div>`;
+            return;
+          }
+
+          list.innerHTML = "";
+          students.forEach((s,i)=>{
+            const row = document.createElement("div");
+            row.className = "mc-item";
+            row.innerHTML = `<span>${i+1}) ${s.name}</span><button type="button" class="mc-del">حذف</button>`;
+            row.querySelector(".mc-del").onclick = async ()=>{
+              if(!confirm(`حذف الطالب: ${s.name} ؟`)) return;
+              await window.__MUATH_DELETE_STUDENT__(s.id);
+              await renderStudents();
+            };
+            list.appendChild(row);
+          });
+        }
+
+        panel.querySelector("#msLoad").onclick = renderStudents;
+
+        panel.querySelector("#msAdd").onclick = async ()=>{
+          const stage = panel.querySelector("#msStage").value;
+          const cls   = panel.querySelector("#msClass").value;
+          const nameEl = panel.querySelector("#msName");
+          const name = nameEl.value.trim();
+
+          if(!stage || !cls) return alert("اختر المرحلة والفصل");
+          if(!name) return alert("اكتب اسم الطالب");
+
+          await window.__MUATH_ADD_STUDENT__(stage, cls, name);
+          nameEl.value = "";
+          await renderStudents();
+        };
+panel.querySelector("#msMigrate").onclick = async ()=>{
+
+  if(!confirm("هل تريد ترحيل جميع الطلاب من students.js إلى Firebase؟")) return;
+
+  try{
+
+    const res = await window.__MUATH_MIGRATE_FROM_JS__();
+
+    alert(
+      "تم الترحيل بنجاح ✅\n\n"+
+      "إجمالي الأسماء: "+res.total+"\n"+
+      "تمت الكتابة: "+res.written
+    );
+
+  }catch(e){
+
+    console.error(e);
+
+    alert("فشل الترحيل");
+
+  }
+
+};
+        panel.querySelector("#msImport").onclick = async ()=>{
+  const stage = panel.querySelector("#msStage").value;
+  const cls   = panel.querySelector("#msClass").value;
+  const fileEl = panel.querySelector("#msExcel");
+  const file  = fileEl && fileEl.files ? fileEl.files[0] : null;
+
+  if(!stage || !cls) return alert("اختر المرحلة والفصل");
+  if(!file) return alert("اختر ملف Excel");
+
+  try{
+    const data = await file.arrayBuffer();
+    const wb = XLSX.read(data, { type:"array" });
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+
+    const names = [];
+    for(const r of rows){
+      const v = (r && r[0] != null) ? String(r[0]).trim() : "";
+      if(!v) continue;
+
+      // تجاهل عناوين شائعة
+      const low = v.toLowerCase();
+      if(low === "name" || v === "الاسم" || v === "اسم الطالب") continue;
+
+      names.push(v);
+    }
+
+    if(!names.length) return alert("لم يتم العثور على أسماء في العمود الأول (A)");
+
+    let added = 0;
+    let skipped = 0;
+
+    for(const name of names){
+      const res = await window.__MUATH_ADD_STUDENT__(stage, cls, name);
+
+      // ✅ لو دالة الإضافة عندك ترجع {exists:true}
+      if(res && res.exists === true){
+        skipped++;
+      }else{
+        added++;
+      }
+    }
+
+    alert(
+      "تم الاستيراد ✅\n\n" +
+      "إجمالي الأسماء: " + names.length + "\n" +
+      "طلاب جدد: " + added + "\n" +
+      "موجود مسبقًا: " + skipped
+    );
+
+    fileEl.value = "";
+    await renderStudents();
+
+  }catch(err){
+    console.error(err);
+    alert("فشل الاستيراد. تأكد من ملف Excel وأن العمود A يحتوي الأسماء.");
+  }
+};
+
+        // أول تحميل لقائمة الفصول عند فتح النافذة أول مرة
+        loadClassesList().catch(()=>{});
+      }
+
+      if(document.readyState === "loading"){
+        document.addEventListener("DOMContentLoaded", injectSystemUI, { once:true });
+      }else{
+        injectSystemUI();
+      }
+    })();
+
+
+  </script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
+<button id="waFloatingBtn" type="button">واتساب أولياء الأمور</button>
+<script>
+  
+(function () {
+  const btn = document.getElementById("waFloatingBtn");
+  if (!btn) return;
+
+  btn.addEventListener("click", function () {
+    const url = "/wa.html"; // مهم: من الجذر
+    const w = 1200, h = 820;
+    const left = Math.max(0, (screen.width  - w) / 2);
+    const top  = Math.max(0, (screen.height - h) / 2);
+
+    window.open(
+      url,
+      "WA_PARENT_POPUP",
+      `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`
+    );
+  });
+})();
+</script>
+<style>
+
+#waFloatingBtn{
+  position: fixed !important;
+  left: 20px !important;
+  bottom: 90px !important;
+  z-index: 2147483647 !important; /* أعلى قيمة */
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+
+  padding: 10px 14px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+
+  background: #1976d2;
+  color: #fff;
+  font-family: Tahoma;
+  font-size: 14px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,.18);
+}
+#waFloatingBtn:hover{ opacity:.92; }
+  
+</style>
+
+
+
+<!-- ===== ميزة خاصة بالجوال فقط ===== -->
+<div id="mobilePanel" style="display:none;">
+  <div class="mobile-panel-card">
+    <div class="mobile-panel-head">
+      <div class="mobile-panel-title">لوحة الجوال</div>
+      <button type="button" id="mobilePanelClose">إغلاق</button>
+    </div>
+
+    <div class="mobile-panel-actions">
+      <button type="button" class="mobile-panel-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">أعلى الصفحة</button>
+      <button type="button" class="mobile-panel-btn" onclick="document.querySelector('.table-container')?.scrollIntoView({behavior:'smooth'})">السجل</button>
+      <button type="button" class="mobile-panel-btn" onclick="document.querySelector('.stats-wrapper')?.scrollIntoView({behavior:'smooth'})">المؤشرات</button>
+      <button type="button" class="mobile-panel-btn" onclick="document.querySelector('.class-absence-box')?.scrollIntoView({behavior:'smooth'})">غياب الفصول</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const btn = document.getElementById("mobileQuickBtn");
+  const panel = document.getElementById("mobilePanel");
+  const closeBtn = document.getElementById("mobilePanelClose");
+  const card = document.querySelector(".mobile-panel-card");
+
+  if(!btn || !panel) return;
+
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    panel.style.display = (panel.style.display === "none" || panel.style.display === "")
+      ? "block"
+      : "none";
+  });
+
+  if(closeBtn){
+    closeBtn.addEventListener("click", function(){
+      panel.style.display = "none";
+    });
+  }
+
+  if(card){
+    card.addEventListener("click", function(e){
+      e.stopPropagation();
+    });
+  }
+
+  document.addEventListener("click", function(){
+    panel.style.display = "none";
+  });
+})();
+</script>
+
 </body>
+
 </html>
